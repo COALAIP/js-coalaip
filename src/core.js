@@ -23,6 +23,17 @@ setter(Thing, new ImageObject(), 'image')
 setter(Thing, String(), 'name')
 setter(Thing, new VideoObject(), 'video')
 
+// Action
+
+function Action (context, type) {
+  context = context || SCHEMA
+  type = type || 'Action'
+  Thing.call(this, context, type)
+}
+
+inherit(Action, Thing)
+setter(Action, String(), 'error')
+
 // CreativeWork
 
 function CreativeWork (context, type) {
@@ -73,6 +84,16 @@ function AbstractWork (type) {
 }
 
 inherit(AbstractWork, CreativeWork)
+
+// AssessAction
+
+function AssessAction (context, type) {
+  context = context || SCHEMA
+  type = type || 'AssessAction'
+  Action.call(this, context, type)
+}
+
+inherit(AssessAction, Action)
 
 // Copyright
 
@@ -141,6 +162,16 @@ setter(Right, new Place(), 'territory')
 setter(Right, new Date(), 'validFrom', dateToString)
 setter(Right, new Date(), 'validThrough', dateToString)
 
+// TransferAction
+
+function TransferAction (context, type) {
+  context = context || SCHEMA
+  type = type || 'TransferAction'
+  Action.call(this, context, type)
+}
+
+inherit(TransferAction, Action)
+
 // AudioObject
 
 function AudioObject () {
@@ -159,6 +190,30 @@ function ImageObject () {
 inherit(ImageObject, MediaObject)
 setter(ImageObject, String(), 'caption')
 
+// ReviewAction
+
+function ReviewAction (context, type) {
+  context = context || SCHEMA
+  type = type || 'ReviewAction'
+  AssessAction.call(this, context, type)
+}
+
+inherit(ReviewAction, AssessAction)
+setter(ReviewAction, new Party(), 'asserter')
+setter(ReviewAction, Boolean(), 'assertionTruth')
+setter(ReviewAction, new Thing(), 'assertionSubject')
+setter(ReviewAction, new Date(), 'validFrom', dateToString)
+setter(ReviewAction, new Date(), 'validThrough', dateToString)
+
+// RightsTransferAction
+
+function RightsTransferAction () {
+  TransferAction.call(this, COALAIP, 'RightsTransferAction')
+}
+
+inherit(RightsTransferAction, TransferAction)
+setter(RightsTransferAction, new CreativeWork(), 'transferContract')
+
 // VideoObject
 
 function VideoObject () {
@@ -169,17 +224,22 @@ inherit(VideoObject, MediaObject)
 
 module.exports = {
   Thing,
+  Action,
   CreativeWork,
   Intangible,
   Party,
   Place,
   AbstractWork,
+  AssessAction,
   Copyright,
   MediaObject,
   Organization,
   Person,
   Right,
+  TransferAction,
   AudioObject,
   ImageObject,
+  ReviewAction,
+  RightsTransferAction,
   VideoObject
 }

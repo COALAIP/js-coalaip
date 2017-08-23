@@ -6,14 +6,6 @@ const capitalize = require('./util').capitalize
 
 const Registry = Object.assign({}, Core, Music)
 
-function handleData(data, instance, method) {
-  if (data.constructor === Object) {
-    instance[method](parse(data))
-  } else {
-    instance[method](data)
-  }
-}
-
 function parse (data) {
   // data['@context']
   const cls = Registry[data['@type']]
@@ -29,13 +21,25 @@ function parse (data) {
     if (instance[method = 'add' + capitalized]) {
       if (data[key] instanceof Array) {
         for (j = 0; j < data[key].length; j++) {
-          handleData(data[key][j], instance, method)
+          if (data[key][j].constructor === Object) {
+            instance[method](parse(data[key][j]))
+          } else {
+            instance[method](data[key][j])
+          }
         }
       } else {
-        handleData(data[key], instance, method)
+        if (data[key].constructor === Object) {
+          instance[method](parse(data[key]))
+        } else {
+          instance[method](data[key])
+        }
       }
     } else if (instance[method = 'set' + capitalized]) {
-      handleData(data[key], instance, method)
+      if (data[key].constructor === Object) {
+        instance[method](parse(data[key]))
+      } else {
+        instance[method](data[key])
+      }
     } else {
       throw new Error(`no "add${capitalized}" or "set${capitalized}" method`)
     }

@@ -1,10 +1,14 @@
 'use strict'
 
 const expect = require('chai').expect
-const it = require('mocha').it
-const capitalize = require('../../../src/util').capitalize
+const capitalize = require('../../src/util').capitalize
 
-exports.checkContextAndType = module => {
+const {
+  describe,
+  it
+} = require('mocha')
+
+const checkContextAndType = module => {
   return it('checks context and type', () => {
     const bool = module.instance._data['@context'] === module.context &&
                  module.instance._data['@type'] === module.type
@@ -12,14 +16,14 @@ exports.checkContextAndType = module => {
   })
 }
 
-exports.checkInheritance = module => {
+const checkInheritance = module => {
   return it('checks inheritance', () => {
     const bool = module.parents.every(parent => module.instance instanceof parent)
     expect(bool).to.be.true
   })
 }
 
-exports.addValues = module => {
+const addValues = module => {
   return it('adds values', () => {
     const keys = Object.keys(module.add)
     const values = keys.map(key => module.add[key])
@@ -39,12 +43,25 @@ exports.addValues = module => {
   })
 }
 
-exports.setValues = module => {
+const setValues = module => {
   return it('sets values', () => {
     const keys = Object.keys(module.set)
     const values = keys.map(key => module.set[key])
     for (let i = 0; i < keys.length; i++) {
       module.instance['set' + capitalize(keys[i])](values[i])
+    }
+  })
+}
+
+module.exports = module => {
+  describe(module.type, () => {
+    checkContextAndType(module)
+    checkInheritance(module)
+    if (module.add) {
+      addValues(module)
+    }
+    if (module.set) {
+      setValues(module)
     }
   })
 }

@@ -1,13 +1,13 @@
 'use strict'
 
 const describe = require('mocha').describe
-const core = require('./fixtures/core')
+const music = require('./fixtures/music')
 const test = require('./fixtures/test')
 
-const types = Object.keys(core)
+const types = Object.keys(music)
 
-describe('Core', () => {
+describe('Music', () => {
   types.forEach(type => {
-    test(core[type])
+    test(music[type])
   })
 })

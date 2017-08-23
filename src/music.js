@@ -32,6 +32,7 @@ function MusicGroup () {
 }
 
 inherit(MusicGroup, Organization)
+setter(MusicGroup, String(), 'genre')
 
 // MusicPlaylist
 
