@@ -2,6 +2,7 @@
 
 const expect = require('chai').expect
 const capitalize = require('../../src/util').capitalize
+const parse = require('../../src/parse')
 
 const {
   describe,
@@ -18,7 +19,9 @@ const checkContextAndType = module => {
 
 const checkInheritance = module => {
   return it('checks inheritance', () => {
-    const bool = module.parents.every(parent => module.instance instanceof parent)
+    const bool = module.parents.every(parent => {
+      return module.instance instanceof parent
+    })
     expect(bool).to.be.true
   })
 }
@@ -26,7 +29,9 @@ const checkInheritance = module => {
 const addValues = module => {
   return it('adds values', () => {
     const keys = Object.keys(module.add)
-    const values = keys.map(key => module.add[key])
+    const values = keys.map(key => {
+      return module.add[key]
+    })
     let capitalized, i, j, key, value
     for (i = 0; i < keys.length; i++) {
       key = keys[i]
@@ -46,10 +51,21 @@ const addValues = module => {
 const setValues = module => {
   return it('sets values', () => {
     const keys = Object.keys(module.set)
-    const values = keys.map(key => module.set[key])
+    const values = keys.map(key => {
+      return module.set[key]
+    })
     for (let i = 0; i < keys.length; i++) {
       module.instance['set' + capitalize(keys[i])](values[i])
     }
+  })
+}
+
+const parseData = module => {
+  return it('parses data', () => {
+    const data = module.instance.data()
+    const other = parse(data)
+    const bool = module.instance.equals(other)
+    expect(bool).to.be.true
   })
 }
 
@@ -63,5 +79,6 @@ module.exports = module => {
     if (module.set) {
       setValues(module)
     }
+    parseData(module)
   })
 }

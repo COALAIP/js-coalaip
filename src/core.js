@@ -4,7 +4,7 @@ const {
   COALAIP,
   SCHEMA,
   adder,
-  dateToString,
+  // dateToString,
   inherit,
   setter
 } = require('./util')
@@ -104,8 +104,8 @@ function Copyright () {
 inherit(Copyright, Intangible)
 setter(Copyright, new CreativeWork(), 'rightsOf')
 setter(Copyright, new Place(), 'territory')
-setter(Copyright, new Date(), 'validFrom', dateToString)
-setter(Copyright, new Date(), 'validThrough', dateToString)
+setter(Copyright, String(), 'validFrom')
+setter(Copyright, String(), 'validThrough')
 
 // Manifestation
 
@@ -159,8 +159,8 @@ setter(Right, new CreativeWork(), 'license')
 setter(Right, Number(), 'percentageShares')
 setter(Right, new Copyright(), 'source')
 setter(Right, new Place(), 'territory')
-setter(Right, new Date(), 'validFrom', dateToString)
-setter(Right, new Date(), 'validThrough', dateToString)
+setter(Right, String(), 'validFrom')
+setter(Right, String(), 'validThrough')
 
 // TransferAction
 
@@ -202,8 +202,8 @@ inherit(ReviewAction, AssessAction)
 setter(ReviewAction, new Party(), 'asserter')
 setter(ReviewAction, Boolean(), 'assertionTruth')
 setter(ReviewAction, new Thing(), 'assertionSubject')
-setter(ReviewAction, new Date(), 'validFrom', dateToString)
-setter(ReviewAction, new Date(), 'validThrough', dateToString)
+setter(ReviewAction, String(), 'validFrom')
+setter(ReviewAction, String(), 'validThrough')
 
 // RightsTransferAction
 

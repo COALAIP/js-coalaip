@@ -139,8 +139,8 @@ exports.Copyright = {
     name: 'copyright',
     rightsOf: new core.CreativeWork(),
     territory: new core.Place(),
-    validFrom: new Date(),
-    validThrough: new Date()
+    validFrom: '2018-01-01',
+    validThrough: '2088-01-01'
   }
 }
 
@@ -215,8 +215,8 @@ exports.Right = {
     percentageShares: Number(),
     source: new core.Copyright(),
     territory: new core.Place(),
-    validFrom: new Date(),
-    validThrough: new Date()
+    validFrom: '2018-01-01',
+    validThrough: '2088-01-01'
   }
 }
 
@@ -297,8 +297,8 @@ exports.ReviewAction =  {
     assertionTruth: false,
     error: 'erroneous',
     name: 'reviewAction',
-    validFrom: new Date(),
-    validThrough: new Date()
+    validFrom: '2018-01-01',
+    validThrough: '2088-01-01'
   }
 }
 

@@ -20,6 +20,77 @@ const isSameType = (x, y) => {
   return getType(x) === getType(y)
 }
 
+exports.adder = (cls, expected, key, fn) => {
+  const capitalized = exports.capitalize(key)
+  cls.prototype['get' + capitalized] = function () {
+    return this._data[key]
+  }
+  cls.prototype['add' + capitalized] = function (actual) {
+    if (!exports.isSubType(actual, expected)) {
+      throw errUnexpectedType(actual, expected)
+    }
+    const data = this._data
+    if (!data[key]) {
+      data[key] = []
+    }
+    if (fn) {
+      data[key].push(fn(actual))
+    } else {
+      data[key].push(actual)
+    }
+  }
+}
+
+exports.capitalize = str => {
+  return str.charAt(0).toUpperCase() + str.slice(1)
+}
+
+exports.dateToString = (date) => {
+  return date.toISOString().slice(0, 10)
+}
+
+exports.inherit = (child, parent) => {
+  child.prototype = Object.create(parent.prototype)
+  child.prototype.constructor = child
+}
+
+exports.isSubType = (child, parent) => {
+  return (typeof parent === 'object' && child instanceof parent.constructor) || isSameType(child, parent)
+}
+
+exports.order = x => {
+    return JSON.parse(exports.orderStringify(x))
+}
+
+exports.orderStringify = (x, space) => {
+    const keys = []
+    JSON.stringify(x, (k, v) => {
+        keys.push(k)
+        if (v instanceof Array) {
+            v.sort(exports.sort)
+        }
+        return v
+    })
+    return JSON.stringify(x, keys.sort(), space)
+}
+
+exports.setter = (cls, expected, key, fn) => {
+  const capitalized = exports.capitalize(key)
+  cls.prototype['get' + capitalized] = function () {
+    return this._data[key]
+  }
+  cls.prototype['set' + capitalized] = function (actual) {
+    if (!exports.isSubType(actual, expected)) {
+      throw errUnexpectedType(actual, expected)
+    }
+    if (fn) {
+      this._data[key] = fn(actual)
+    } else {
+      this._data[key] = actual
+    }
+  }
+}
+
 exports.sort = (x, y) => {
   let i
   if (x instanceof Array && y instanceof Array) {
@@ -68,75 +139,4 @@ exports.sort = (x, y) => {
     return 1
   }
   return 0
-}
-
-exports.adder = (cls, expected, key, fn) => {
-  const capitalized = exports.capitalize(key)
-  cls.prototype['get' + capitalized] = function () {
-    return this._data[key]
-  }
-  cls.prototype['add' + capitalized] = function (actual) {
-    if (!exports.isSubType(actual, expected)) {
-      throw errUnexpectedType(actual, expected)
-    }
-    const data = this._data
-    if (!data[key]) {
-      data[key] = []
-    }
-    if (fn) {
-      data[key].push(fn(actual))
-    } else {
-      data[key].push(actual)
-    }
-  }
-}
-
-exports.capitalize = str => {
-  return str.charAt(0).toUpperCase() + str.slice(1)
-}
-
-exports.inherit = (child, parent) => {
-  child.prototype = Object.create(parent.prototype)
-  child.prototype.constructor = child
-}
-
-exports.setter = (cls, expected, key, fn) => {
-  const capitalized = exports.capitalize(key)
-  cls.prototype['get' + capitalized] = function () {
-    return this._data[key]
-  }
-  cls.prototype['set' + capitalized] = function (actual) {
-    if (!exports.isSubType(actual, expected)) {
-      throw errUnexpectedType(actual, expected)
-    }
-    if (fn) {
-      this._data[key] = fn(actual)
-    } else {
-      this._data[key] = actual
-    }
-  }
-}
-
-exports.dateToString = (date) => {
-  return date.toISOString().slice(0, 10)
-}
-
-exports.isSubType = (child, parent) => {
-  return (typeof parent === 'object' && child instanceof parent.constructor) || isSameType(child, parent)
-}
-
-exports.orderStringify = (x, space) => {
-    const keys = []
-    JSON.stringify(x, (k, v) => {
-        keys.push(k)
-        if (v instanceof Array) {
-            v.sort(exports.sort)
-        }
-        return v
-    })
-    return JSON.stringify(x, keys.sort(), space)
-}
-
-exports.order = x => {
-    return JSON.parse(exports.orderStringify(x))
 }

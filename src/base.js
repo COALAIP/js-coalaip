@@ -12,34 +12,45 @@ function Base (context, type) {
   }
 }
 
+Base.prototype.add = function (key, val, fn) {
+  const data = this._data
+  if (!data[key]) {
+    data[key] = []
+  }
+  if (fn) {
+    data[key].push(fn(val))
+  } else {
+    data[key].push(val)
+  }
+}
+
+Base.prototype.rm = function (key, idx) {
+  const data = this._data
+  if (!data[key]) {
+    throw new Error(`could not find key="${key}"`)
+  }
+  if (data[key] instanceof Array && typeof idx === 'number') {
+    data[key].splice(idx, 1)
+  } else {
+    delete data[key]
+  }
+}
+
+Base.prototype.set = function (key, val, fn) {
+  const data = this._data
+  if (fn) {
+    data[key] = fn(val)
+  } else {
+    data[key] = val
+  }
+}
+
 Base.prototype.compare = function (other) {
   return sort(this.data(), other.data())
 }
 
 Base.prototype.equals = function (other) {
   return !this.compare(other)
-}
-
-Base.prototype.tree = function () {
-  const arr = []
-  const data = this._data
-  const keys = Object.keys(data)
-  let i, j, key, sub
-  for (i = 0; i < keys.length; i++) {
-    key = keys[i]
-    if (isSubType(data[key], new Base())) {
-      arr.push(...data[key].tree())
-    }
-    if (data[key] instanceof Array) {
-      for (j = 0; j < data[key].length; j++) {
-        if (isSubType(data[key][j], new Base())) {
-          arr.push(...data[key][j].tree())
-        }
-      }
-    }
-  }
-  arr.push(this)
-  return Array.from(new Set(arr))
 }
 
 Base.prototype.data = function (format) {
@@ -82,39 +93,35 @@ Base.prototype.data = function (format) {
   return result
 }
 
-Base.prototype.rm = function (key, idx) {
+Base.prototype.tree = function () {
+  const arr = []
   const data = this._data
-  if (!data[key]) {
-    throw new Error(`could not find key="${key}"`)
+  const keys = Object.keys(data)
+  let i, j, key, sub
+  for (i = 0; i < keys.length; i++) {
+    key = keys[i]
+    if (isSubType(data[key], new Base())) {
+      arr.push(...data[key].tree())
+    }
+    if (data[key] instanceof Array) {
+      for (j = 0; j < data[key].length; j++) {
+        if (isSubType(data[key][j], new Base())) {
+          arr.push(...data[key][j].tree())
+        }
+      }
+    }
   }
-  if (data[key] instanceof Array && typeof idx === 'number') {
-    data[key].splice(idx, 1)
-  } else {
-    delete data[key]
+  for (i = 0; i < arr.length; i++) {
+    for (j = i+1; j < arr.length; ) {
+      if (arr[i].equals(arr[j])) {
+        arr.splice(j, 1)
+      } else {
+        j++
+      }
+    }
   }
-}
-
-// for testing
-
-Base.prototype.add = function (key, val, fn) {
-  const data = this._data
-  if (!data[key]) {
-    data[key] = []
-  }
-  if (fn) {
-    data[key].push(fn(val))
-  } else {
-    data[key].push(val)
-  }
-}
-
-Base.prototype.set = function (key, val, fn) {
-  const data = this._data
-  if (fn) {
-    data[key] = fn(val)
-  } else {
-    data[key] = val
-  }
+  arr.push(this)
+  return arr
 }
 
 module.exports = Base
