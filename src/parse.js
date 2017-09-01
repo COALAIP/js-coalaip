@@ -6,7 +6,7 @@ const capitalize = require('./util').capitalize
 
 const Registry = Object.assign({}, Core, Music)
 
-function parse (data) {
+function parse (data, subInstances) {
   // data['@context']
   const cls = Registry[data['@type']]
   const instance = new cls()
@@ -22,21 +22,21 @@ function parse (data) {
       if (data[key] instanceof Array) {
         for (j = 0; j < data[key].length; j++) {
           if (data[key][j].constructor === Object) {
-            instance[method](parse(data[key][j]))
+            parseSubInstance(data[key][j], instance, method, subInstances)
           } else {
             instance[method](data[key][j])
           }
         }
       } else {
         if (data[key].constructor === Object) {
-          instance[method](parse(data[key]))
+            parseSubInstance(data[key], instance, method, subInstances)
         } else {
           instance[method](data[key])
         }
       }
     } else if (instance[method = 'set' + capitalized]) {
       if (data[key].constructor === Object) {
-        instance[method](parse(data[key]))
+        parseSubInstance(data[key], instance, method, subInstances)
       } else {
         instance[method](data[key])
       }
@@ -47,4 +47,18 @@ function parse (data) {
   return instance
 }
 
-module.exports = parse
+function parseSubInstance (data, instance, method, subInstances) {
+  const parsed = parse(data, subInstances)
+  for (let i = 0; i < subInstances.length; i++) {
+    if (subInstances[i].equals(parsed)) {
+      instance[method](subInstances[i])
+      return
+    }
+  }
+  instance[method](parsed)
+  subInstances.push(parsed)
+}
+
+module.exports = data => {
+  return parse(data, [])
+}

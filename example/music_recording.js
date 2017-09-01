@@ -22,8 +22,8 @@ composition.setName('November')
 composition.addComposer(andy)
 
 let recording = new MusicRecording()
-recording.setRecordingOf(composition)
 recording.addByArtist(band)
+recording.setRecordingOf(composition)
 
 const data = recording.data()
 
