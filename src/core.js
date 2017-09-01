@@ -3,10 +3,9 @@ const Base = require('./base')
 const {
   COALAIP,
   SCHEMA,
-  adder,
-  // dateToString,
   inherit,
-  setter
+  propArray,
+  propValue
 } = require('./util')
 
 // Thing
@@ -18,10 +17,10 @@ function Thing (context, type) {
 }
 
 inherit(Thing, Base)
-setter(Thing, new AudioObject(), 'audio')
-setter(Thing, new ImageObject(), 'image')
-setter(Thing, String(), 'name')
-setter(Thing, new VideoObject(), 'video')
+propValue(Thing, new AudioObject(), 'audio')
+propValue(Thing, new ImageObject(), 'image')
+propValue(Thing, String(), 'name')
+propValue(Thing, new VideoObject(), 'video')
 
 // Action
 
@@ -32,7 +31,7 @@ function Action (context, type) {
 }
 
 inherit(Action, Thing)
-setter(Action, String(), 'error')
+propValue(Action, String(), 'error')
 
 // CreativeWork
 
@@ -43,9 +42,9 @@ function CreativeWork (context, type) {
 }
 
 inherit(CreativeWork, Thing)
-setter(CreativeWork, String(), 'genre')
-adder(CreativeWork, new Party(), 'producer')
-adder(CreativeWork, new Party(), 'publisher')
+propArray(CreativeWork, String(), 'genre')
+propArray(CreativeWork, new Party(), 'producer')
+propArray(CreativeWork, new Party(), 'publisher')
 
 // Intangible
 
@@ -66,7 +65,7 @@ function Party (context, type) {
 }
 
 inherit(Party, Thing)
-setter(Party, String(), 'email')
+propValue(Party, String(), 'email')
 
 // Place
 
@@ -102,10 +101,10 @@ function Copyright () {
 }
 
 inherit(Copyright, Intangible)
-setter(Copyright, new CreativeWork(), 'rightsOf')
-setter(Copyright, new Place(), 'territory')
-setter(Copyright, String(), 'validFrom')
-setter(Copyright, String(), 'validThrough')
+propValue(Copyright, new CreativeWork(), 'rightsOf')
+propValue(Copyright, new Place(), 'territory')
+propValue(Copyright, String(), 'validFrom')
+propValue(Copyright, String(), 'validThrough')
 
 // Manifestation
 
@@ -114,7 +113,7 @@ setter(Copyright, String(), 'validThrough')
 // }
 
 // inherit(Manifestation, CreativeWork)
-// setter(Manifestation, AbstractWork, 'manifestationOfWork')
+// propValue(Manifestation, AbstractWork, 'manifestationOfWork')
 
 // MediaObject
 
@@ -124,8 +123,8 @@ function MediaObject (type) {
 }
 
 inherit(MediaObject, CreativeWork)
-setter(MediaObject, String(), 'contentUrl')
-setter(MediaObject, String(), 'encodingFormat')
+propValue(MediaObject, String(), 'contentUrl')
+propValue(MediaObject, String(), 'encodingFormat')
 
 // Organization
 
@@ -136,7 +135,7 @@ function Organization (type) {
 
 inherit(Organization, Party)
 
-adder(Organization, new Party(), 'member')
+propArray(Organization, new Party(), 'member')
 
 // Person
 
@@ -145,8 +144,8 @@ function Person () {
 }
 
 inherit(Person, Party)
-setter(Person, String(), 'familyName')
-setter(Person, String(), 'givenName')
+propValue(Person, String(), 'familyName')
+propValue(Person, String(), 'givenName')
 
 // Right
 
@@ -155,12 +154,12 @@ function Right () {
 }
 
 inherit(Right, Intangible)
-setter(Right, new CreativeWork(), 'license')
-setter(Right, Number(), 'percentageShares')
-setter(Right, new Copyright(), 'source')
-setter(Right, new Place(), 'territory')
-setter(Right, String(), 'validFrom')
-setter(Right, String(), 'validThrough')
+propValue(Right, new CreativeWork(), 'license')
+propValue(Right, Number(), 'percentageShares')
+propValue(Right, new Copyright(), 'source')
+propValue(Right, new Place(), 'territory')
+propValue(Right, String(), 'validFrom')
+propValue(Right, String(), 'validThrough')
 
 // TransferAction
 
@@ -179,7 +178,7 @@ function AudioObject () {
 }
 
 inherit(AudioObject, MediaObject)
-setter(AudioObject, String(), 'duration')
+propValue(AudioObject, String(), 'duration')
 
 // ImageObject
 
@@ -188,7 +187,7 @@ function ImageObject () {
 }
 
 inherit(ImageObject, MediaObject)
-setter(ImageObject, String(), 'caption')
+propValue(ImageObject, String(), 'caption')
 
 // ReviewAction
 
@@ -199,11 +198,11 @@ function ReviewAction (context, type) {
 }
 
 inherit(ReviewAction, AssessAction)
-setter(ReviewAction, new Party(), 'asserter')
-setter(ReviewAction, Boolean(), 'assertionTruth')
-setter(ReviewAction, new Thing(), 'assertionSubject')
-setter(ReviewAction, String(), 'validFrom')
-setter(ReviewAction, String(), 'validThrough')
+propValue(ReviewAction, new Party(), 'asserter')
+propValue(ReviewAction, Boolean(), 'assertionTruth')
+propValue(ReviewAction, new Thing(), 'assertionSubject')
+propValue(ReviewAction, String(), 'validFrom')
+propValue(ReviewAction, String(), 'validThrough')
 
 // RightsTransferAction
 
@@ -212,7 +211,7 @@ function RightsTransferAction () {
 }
 
 inherit(RightsTransferAction, TransferAction)
-setter(RightsTransferAction, new CreativeWork(), 'transferContract')
+propValue(RightsTransferAction, new CreativeWork(), 'transferContract')
 
 // VideoObject
 

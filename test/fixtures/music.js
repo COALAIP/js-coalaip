@@ -28,12 +28,12 @@ exports.MusicComposition = {
   ],
   add: {
     composer: new core.Party(),
+    genre: 'slimecore',
     lyricist: new core.Party(),
     producer: new core.Party(),
     publisher: new core.Party()
   },
   set: {
-    genre: 'slimecore',
     iswcCode: 'T-123.456.789-Z',
     name: 'musicComposition'
   }
@@ -50,11 +50,11 @@ exports.MusicGroup = {
     core.Organization
   ],
   add: {
+    genre: 'ska',
     member: new core.Party()
   },
   set: {
     email: 'me@example.org',
-    genre: 'ska',
     name: 'musicGroup'
   }
 }
@@ -70,11 +70,11 @@ exports.MusicRecording = {
   ],
   add: {
     byArtist: new MusicGroup(),
+    genre: 'slimecore',
     producer: new core.Party(),
     publisher: new core.Party()
   },
   set: {
-    genre: 'slimecore',
     isrcCode: '',
     name: 'musicRecording',
     recordingOf: new MusicComposition()
@@ -91,12 +91,12 @@ exports.MusicPlaylist = {
     core.CreativeWork
   ],
   add: {
+    genre: 'slimecore',
     producer: new core.Party(),
     publisher: new core.Party(),
     track: new MusicRecording()
   },
   set: {
-    genre: 'slimecore',
     name: 'musicPlaylist'
   }
 }
@@ -113,13 +113,13 @@ exports.MusicAlbum = {
   ],
   add: {
     byArtist: new MusicGroup(),
+    genre: 'slimecore',
     producer: new core.Party(),
     publisher: new core.Party(),
     track: new MusicRecording()
   },
   set: {
     albumProductionType: 'DemoAlbum',
-    genre: 'slimecore',
     name: 'musicAlbum'
   }
 }
@@ -135,6 +135,7 @@ exports.MusicRelease = {
     MusicPlaylist
   ],
   add: {
+    genre: 'slimecore',
     producer: new core.Party(),
     publisher: new core.Party(),
     recordLabel: new core.Party(),
@@ -142,7 +143,6 @@ exports.MusicRelease = {
   },
   set: {
     catalogNumber: '12345',
-    genre: 'slimecore',
     musicReleaseFormat: 'vinyl',
     name: 'musicRelease',
     releaseOf: new MusicAlbum()

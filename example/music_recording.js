@@ -27,7 +27,10 @@ recording.setRecordingOf(composition)
 
 const data = recording.data()
 
+data.something = 'else'
+
 recording = parse(data)
+
 const recordingOf = recording.getRecordingOf()
 
 if (!recordingOf.equals(composition)) {

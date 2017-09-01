@@ -12,16 +12,12 @@ function Base (context, type) {
   }
 }
 
-Base.prototype.add = function (key, val, fn) {
+Base.prototype.add = function (key, val) {
   const data = this._data
   if (!data[key]) {
     data[key] = []
   }
-  if (fn) {
-    data[key].push(fn(val))
-  } else {
-    data[key].push(val)
-  }
+  data[key].push(val)
 }
 
 Base.prototype.rm = function (key, idx) {
@@ -36,13 +32,8 @@ Base.prototype.rm = function (key, idx) {
   }
 }
 
-Base.prototype.set = function (key, val, fn) {
-  const data = this._data
-  if (fn) {
-    data[key] = fn(val)
-  } else {
-    data[key] = val
-  }
+Base.prototype.set = function (key, val) {
+  this._data[key] = val
 }
 
 Base.prototype.compare = function (other) {
@@ -83,7 +74,7 @@ Base.prototype.data = function (format) {
     if (isSubType(data[key], new Base())) {
       result[key] = fn(data[key])
     }
-    if (data[key] instanceof Array) {
+    if (data[key] instanceof Array && isSubType(data[key][0], new Base())) {
       result[key] = new Array(data[key].length)
       for (j = 0; j < data[key].length; j++) {
         result[key][j] = fn(data[key][j])

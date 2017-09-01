@@ -7,7 +7,6 @@ const capitalize = require('./util').capitalize
 const Registry = Object.assign({}, Core, Music)
 
 function parse (data, subInstances) {
-  // data['@context']
   const cls = Registry[data['@type']]
   const instance = new cls()
   const keys = Object.keys(data)
@@ -29,7 +28,7 @@ function parse (data, subInstances) {
         }
       } else {
         if (data[key].constructor === Object) {
-            parseSubInstance(data[key], instance, method, subInstances)
+          parseSubInstance(data[key], instance, method, subInstances)
         } else {
           instance[method](data[key])
         }
@@ -41,7 +40,7 @@ function parse (data, subInstances) {
         instance[method](data[key])
       }
     } else {
-      throw new Error(`no "add${capitalized}" or "set${capitalized}" method`)
+      instance._data[key] = data[key]
     }
   }
   return instance

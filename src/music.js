@@ -9,9 +9,9 @@ const {
 
 const {
   SCHEMA,
-  adder,
   inherit,
-  setter
+  propArray,
+  propValue
 } = require('./util')
 
 // MusicComposition
@@ -21,9 +21,9 @@ function MusicComposition () {
 }
 
 inherit(MusicComposition, AbstractWork)
-adder(MusicComposition, new Party(), 'composer')
-setter(MusicComposition, String(), 'iswcCode')
-adder(MusicComposition, new Party(), 'lyricist')
+propArray(MusicComposition, new Party(), 'composer')
+propValue(MusicComposition, String(), 'iswcCode')
+propArray(MusicComposition, new Party(), 'lyricist')
 
 // MusicGroup
 
@@ -32,7 +32,7 @@ function MusicGroup () {
 }
 
 inherit(MusicGroup, Organization)
-setter(MusicGroup, String(), 'genre')
+propArray(MusicGroup, String(), 'genre')
 
 // MusicPlaylist
 
@@ -42,7 +42,7 @@ function MusicPlaylist (type) {
 }
 
 inherit(MusicPlaylist, CreativeWork)
-adder(MusicPlaylist, new MusicRecording(), 'track')
+propArray(MusicPlaylist, new MusicRecording(), 'track')
 
 // MusicRecording
 
@@ -51,9 +51,9 @@ function MusicRecording () {
 }
 
 inherit(MusicRecording, CreativeWork)
-adder(MusicRecording, new MusicGroup(), 'byArtist')
-setter(MusicRecording, String(), 'isrcCode')
-setter(MusicRecording, new MusicComposition(), 'recordingOf')
+propArray(MusicRecording, new MusicGroup(), 'byArtist')
+propValue(MusicRecording, String(), 'isrcCode')
+propValue(MusicRecording, new MusicComposition(), 'recordingOf')
 
 // MusicAlbum
 
@@ -62,8 +62,8 @@ function MusicAlbum () {
 }
 
 inherit(MusicAlbum, MusicPlaylist)
-setter(MusicAlbum, String(), 'albumProductionType')
-adder(MusicAlbum, new Party(), 'byArtist')
+propValue(MusicAlbum, String(), 'albumProductionType')
+propArray(MusicAlbum, new Party(), 'byArtist')
 
 // MusicRelease
 
@@ -72,10 +72,10 @@ function MusicRelease () {
 }
 
 inherit(MusicRelease, MusicPlaylist)
-setter(MusicRelease, String(), 'catalogNumber')
-setter(MusicRelease, String(), 'musicReleaseFormat')
-adder(MusicRelease, new Party(), 'recordLabel')
-setter(MusicRelease, new MusicAlbum(), 'releaseOf')
+propValue(MusicRelease, String(), 'catalogNumber')
+propValue(MusicRelease, String(), 'musicReleaseFormat')
+propArray(MusicRelease, new Party(), 'recordLabel')
+propValue(MusicRelease, new MusicAlbum(), 'releaseOf')
 
 module.exports = {
   MusicAlbum,

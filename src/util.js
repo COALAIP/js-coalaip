@@ -20,33 +20,8 @@ const isSameType = (x, y) => {
   return getType(x) === getType(y)
 }
 
-exports.adder = (cls, expected, key, fn) => {
-  const capitalized = exports.capitalize(key)
-  cls.prototype['get' + capitalized] = function () {
-    return this._data[key]
-  }
-  cls.prototype['add' + capitalized] = function (actual) {
-    if (!exports.isSubType(actual, expected)) {
-      throw errUnexpectedType(actual, expected)
-    }
-    const data = this._data
-    if (!data[key]) {
-      data[key] = []
-    }
-    if (fn) {
-      data[key].push(fn(actual))
-    } else {
-      data[key].push(actual)
-    }
-  }
-}
-
 exports.capitalize = str => {
   return str.charAt(0).toUpperCase() + str.slice(1)
-}
-
-exports.dateToString = (date) => {
-  return date.toISOString().slice(0, 10)
 }
 
 exports.inherit = (child, parent) => {
@@ -74,7 +49,33 @@ exports.orderStringify = (x, space) => {
     return JSON.stringify(x, keys.sort(), space)
 }
 
-exports.setter = (cls, expected, key, fn) => {
+exports.propArray = (cls, expected, key, fn) => {
+  const capitalized = exports.capitalize(key)
+  cls.prototype['get' + capitalized] = function () {
+    return this._data[key]
+  }
+  cls.prototype['has' + capitalized] = function (actual) {
+    const instances = this._data[key]
+    for (let i = 0; i < instances.length; i++) {
+      if (instances[i].equals(actual)) {
+        return true
+      }
+    }
+    return false
+  }
+  cls.prototype['add' + capitalized] = function (actual) {
+    if (!exports.isSubType(actual, expected)) {
+      throw errUnexpectedType(actual, expected)
+    }
+    const data = this._data
+    if (!data[key]) {
+      data[key] = []
+    }
+    data[key].push(actual)
+  }
+}
+
+exports.propValue = (cls, expected, key) => {
   const capitalized = exports.capitalize(key)
   cls.prototype['get' + capitalized] = function () {
     return this._data[key]
@@ -83,11 +84,7 @@ exports.setter = (cls, expected, key, fn) => {
     if (!exports.isSubType(actual, expected)) {
       throw errUnexpectedType(actual, expected)
     }
-    if (fn) {
-      this._data[key] = fn(actual)
-    } else {
-      this._data[key] = actual
-    }
+    this._data[key] = actual
   }
 }
 

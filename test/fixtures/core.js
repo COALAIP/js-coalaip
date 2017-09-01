@@ -43,11 +43,11 @@ exports.CreativeWork = {
     core.Thing
   ],
   add: {
+    genre: 'slimecore',
     producer: new core.Party(),
     publisher: new core.Party()
   },
   set: {
-    genre: 'slimecore',
     name: 'creativeWork'
   }
 }
@@ -102,11 +102,11 @@ exports.AbstractWork = {
     core.CreativeWork
   ],
   add: {
+    genre: 'slimecore',
     producer: new core.Party(),
     publisher: new core.Party()
   },
   set: {
-    genre: 'slimecore',
     name: 'abstractWork'
   }
 }
@@ -154,13 +154,13 @@ exports.MediaObject = {
     core.CreativeWork
   ],
   add: {
+    genre: 'slimecore',
     producer: new core.Party(),
     publisher: new core.Party()
   },
   set: {
     contentUrl: 'http://my-media.com',
     encodingFormat: 'audio/mp3',
-    genre: 'slimecore',
     name: 'mediaObject'
   }
 }
@@ -246,6 +246,7 @@ exports.AudioObject = {
     core.MediaObject
   ],
   add: {
+    genre: 'slimecore',
     producer: new core.Party(),
     publisher: new core.Party()
   },
@@ -253,7 +254,6 @@ exports.AudioObject = {
     contentUrl: 'http://my-media.com',
     duration: '',
     encodingFormat: 'audio/mp3',
-    genre: 'slimecore',
     name: 'audioObject'
   }
 }
@@ -269,6 +269,7 @@ exports.ImageObject = {
     core.MediaObject
   ],
   add: {
+    genre: 'Baroque',
     producer: new core.Party(),
     publisher: new core.Party()
   },
@@ -276,7 +277,6 @@ exports.ImageObject = {
     caption: 'woah',
     contentUrl: 'http://my-media.com',
     encodingFormat: 'image/png',
-    genre: 'Baroque',
     name: 'imageObject'
   }
 }
@@ -330,13 +330,13 @@ exports.VideoObject = {
     core.MediaObject
   ],
   add: {
+    genre: 'horror',
     producer: new core.Party(),
     publisher: new core.Party()
   },
   set: {
     contentUrl: 'http://my-media.com',
     encodingFormat: 'video/mp4',
-    genre: 'horror',
     name: 'videoObject'
   }
 }
