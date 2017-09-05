@@ -15,7 +15,13 @@ exports.Thing = {
   parents: [
     Base
   ],
+  add: {
+    audio: new core.AudioObject(),
+    image: new core.ImageObject(),
+    video: new core.VideoObject()
+  },
   set: {
+    description: 'descriptive',
     name: 'thing'
   }
 }

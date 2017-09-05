@@ -17,10 +17,11 @@ function Thing (context, type) {
 }
 
 inherit(Thing, Base)
-propValue(Thing, new AudioObject(), 'audio')
-propValue(Thing, new ImageObject(), 'image')
+propArray(Thing, new AudioObject(), 'audio')
+propValue(Thing, String(), 'description')
+propArray(Thing, new ImageObject(), 'image')
 propValue(Thing, String(), 'name')
-propValue(Thing, new VideoObject(), 'video')
+propArray(Thing, new VideoObject(), 'video')
 
 // Action
 
