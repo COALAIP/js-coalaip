@@ -2,6 +2,8 @@
 
 const expect = require('chai').expect
 const capitalize = require('../../src/util').capitalize
+const core = require('../../src/core')
+const music = require('../../src/music')
 const parse = require('../../src/parse')
 
 const {
@@ -60,10 +62,12 @@ const setValues = module => {
   })
 }
 
+const registry = Object.assign({}, core, music)
+
 const parseData = module => {
   return it('parses data', () => {
     const data = module.instance.data()
-    const other = parse(data)
+    const other = parse(data, registry)
     const bool = module.instance.equals(other)
     expect(bool).to.be.true
   })

@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "author": "Zachary Balder",
   "license": "MIT",
+  "main": "src",
   "dependencies": {
     "chai": "^4.1.1",
     "mocha": "^3.5.0"

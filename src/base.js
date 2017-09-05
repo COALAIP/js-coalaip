@@ -1,5 +1,7 @@
 'use strict'
 
+const parse = require('./parse')
+
 const {
   isSubType,
   sort
@@ -20,28 +22,8 @@ Base.prototype.add = function (key, val) {
   data[key].push(val)
 }
 
-Base.prototype.rm = function (key, idx) {
-  const data = this._data
-  if (!data[key]) {
-    throw new Error(`could not find key="${key}"`)
-  }
-  if (data[key] instanceof Array && typeof idx === 'number') {
-    data[key].splice(idx, 1)
-  } else {
-    delete data[key]
-  }
-}
-
-Base.prototype.set = function (key, val) {
-  this._data[key] = val
-}
-
 Base.prototype.compare = function (other) {
   return sort(this.data(), other.data())
-}
-
-Base.prototype.equals = function (other) {
-  return !this.compare(other)
 }
 
 Base.prototype.data = function (format) {
@@ -73,8 +55,7 @@ Base.prototype.data = function (format) {
     key = keys[i]
     if (isSubType(data[key], new Base())) {
       result[key] = fn(data[key])
-    }
-    if (data[key] instanceof Array && isSubType(data[key][0], new Base())) {
+    } else if (data[key] instanceof Array && isSubType(data[key][0], new Base())) {
       result[key] = new Array(data[key].length)
       for (j = 0; j < data[key].length; j++) {
         result[key][j] = fn(data[key][j])
@@ -82,6 +63,26 @@ Base.prototype.data = function (format) {
     }
   }
   return result
+}
+
+Base.prototype.equals = function (other) {
+  return !this.compare(other)
+}
+
+Base.prototype.rm = function (key, idx) {
+  const data = this._data
+  if (!data[key]) {
+    throw new Error(`could not find key="${key}"`)
+  }
+  if (data[key] instanceof Array && typeof idx === 'number') {
+    data[key].splice(idx, 1)
+  } else {
+    delete data[key]
+  }
+}
+
+Base.prototype.set = function (key, val) {
+  this._data[key] = val
 }
 
 Base.prototype.tree = function () {
@@ -113,6 +114,13 @@ Base.prototype.tree = function () {
   }
   arr.push(this)
   return arr
+}
+
+Base.prototype.withData = function (data, ...modules) {
+  const registry = Object.assign({}, ...modules)
+  delete data['@context']
+  delete data['@type']
+  parse(data, registry, [], this)
 }
 
 module.exports = Base
