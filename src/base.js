@@ -85,34 +85,43 @@ Base.prototype.set = function (key, val) {
   this._data[key] = val
 }
 
-Base.prototype.tree = function () {
-  const arr = []
-  const data = this._data
-  const keys = Object.keys(data)
-  let i, j, key, sub
-  for (i = 0; i < keys.length; i++) {
-    key = keys[i]
-    if (isSubType(data[key], new Base())) {
-      arr.push(...data[key].tree())
-    }
-    if (data[key] instanceof Array) {
-      for (j = 0; j < data[key].length; j++) {
-        if (isSubType(data[key][j], new Base())) {
-          arr.push(...data[key][j].tree())
-        }
-      }
-    }
-  }
-  for (i = 0; i < arr.length; i++) {
-    for (j = i+1; j < arr.length; ) {
-      if (arr[i].equals(arr[j])) {
-        arr.splice(j, 1)
+Base.prototype.subInstances = function () {
+  const tree = this.tree()
+  let i, j
+  for (i = 0; i < tree.length; i++) {
+    tree[i] = tree[i].value
+    for (j = i+1; j < tree.length; ) {
+      if (tree[i].equals(tree[j].value)) {
+        tree.splice(j, 1)
       } else {
         j++
       }
     }
   }
-  arr.push(this)
+  return tree
+}
+
+Base.prototype.tree = function (key = '') {
+  const arr = []
+  const data = this._data
+  const keys = Object.keys(data)
+  let i, j, sub
+  for (i = 0; i < keys.length; i++) {
+    if (isSubType(data[keys[i]], new Base())) {
+      arr.push(...data[keys[i]].tree(key + '/' + keys[i]))
+    }
+    if (data[keys[i]] instanceof Array) {
+      for (j = 0; j < data[keys[i]].length; j++) {
+        if (isSubType(data[keys[i]][j], new Base())) {
+          arr.push(...data[keys[i]][j].tree(key + '/' + keys[i]))
+        }
+      }
+    }
+  }
+  arr.push({
+    key,
+    value: this
+  })
   return arr
 }
 
