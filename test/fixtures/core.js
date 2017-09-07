@@ -150,6 +150,21 @@ exports.Copyright = {
   }
 }
 
+exports.Manifestation = {
+  context: COALAIP,
+  type: 'Manifestation',
+  instance: new core.Manifestation,
+  parents: [
+    Base,
+    core.Thing,
+    core.CreativeWork
+  ],
+  set: {
+    manifestationOf: new core.AbstractWork(),
+    name: 'manifestation'
+  }
+}
+
 exports.MediaObject = {
   context: SCHEMA,
   type: 'MediaObject',

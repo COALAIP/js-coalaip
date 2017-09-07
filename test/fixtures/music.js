@@ -60,13 +60,14 @@ exports.MusicGroup = {
 }
 
 exports.MusicRecording = {
-  context: SCHEMA,
+  context: COALAIP,
   type: 'MusicRecording',
   instance: new MusicRecording(),
   parents: [
     Base,
     core.Thing,
-    core.CreativeWork
+    core.CreativeWork,
+    core.Manifestation
   ],
   add: {
     byArtist: new MusicGroup(),

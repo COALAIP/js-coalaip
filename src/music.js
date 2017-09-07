@@ -3,6 +3,7 @@
 const {
   AbstractWork,
   CreativeWork,
+  Manifestation,
   Organization,
   Party
 } = require('./core')
@@ -36,8 +37,7 @@ propArray(MusicGroup, String(), 'genre')
 
 // MusicPlaylist
 
-function MusicPlaylist (type) {
-  type = type || 'MusicPlaylist'
+function MusicPlaylist (type = 'MusicPlaylist') {
   CreativeWork.call(this, SCHEMA, type)
 }
 
@@ -47,10 +47,10 @@ propArray(MusicPlaylist, new MusicRecording(), 'track')
 // MusicRecording
 
 function MusicRecording () {
-  CreativeWork.call(this, SCHEMA, 'MusicRecording')
+  Manifestation.call(this, 'MusicRecording')
 }
 
-inherit(MusicRecording, CreativeWork)
+inherit(MusicRecording, Manifestation)
 propArray(MusicRecording, new MusicGroup(), 'byArtist')
 propValue(MusicRecording, String(), 'isrcCode')
 propValue(MusicRecording, new MusicComposition(), 'recordingOf')

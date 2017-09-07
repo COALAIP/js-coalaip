@@ -10,9 +10,7 @@ const {
 
 // Thing
 
-function Thing (context, type) {
-  context = context || SCHEMA
-  type = type || 'Thing'
+function Thing (context = SCHEMA, type = 'Thing') {
   Base.call(this, context, type)
 }
 
@@ -25,9 +23,7 @@ propArray(Thing, new VideoObject(), 'video')
 
 // Action
 
-function Action (context, type) {
-  context = context || SCHEMA
-  type = type || 'Action'
+function Action (context = SCHEMA, type = 'Action') {
   Thing.call(this, context, type)
 }
 
@@ -36,9 +32,7 @@ propValue(Action, String(), 'error')
 
 // CreativeWork
 
-function CreativeWork (context, type) {
-  context = context || SCHEMA
-  type = type || 'CreativeWork'
+function CreativeWork (context = SCHEMA, type = 'CreativeWork') {
   Thing.call(this, context, type)
 }
 
@@ -49,9 +43,7 @@ propArray(CreativeWork, new Party(), 'publisher')
 
 // Intangible
 
-function Intangible (context, type) {
-  context = context || SCHEMA
-  type = type || 'Intangible'
+function Intangible (context = SCHEMA, type = 'Intangible') {
   Thing.call(this, context, type)
 }
 
@@ -59,9 +51,7 @@ inherit(Intangible, Thing)
 
 // Party
 
-function Party (context, type) {
-  context = context || COALAIP
-  type = type || 'Party'
+function Party (context = COALAIP, type = 'Party') {
   Thing.call(this, context, type)
 }
 
@@ -78,8 +68,7 @@ inherit(Place, Thing)
 
 // AbstractWork
 
-function AbstractWork (type) {
-  type = type || 'AbstractWork'
+function AbstractWork (type = 'AbstractWork') {
   CreativeWork.call(this, COALAIP, type)
 }
 
@@ -87,9 +76,7 @@ inherit(AbstractWork, CreativeWork)
 
 // AssessAction
 
-function AssessAction (context, type) {
-  context = context || SCHEMA
-  type = type || 'AssessAction'
+function AssessAction (context = SCHEMA, type = 'AssessAction') {
   Action.call(this, context, type)
 }
 
@@ -109,17 +96,16 @@ propValue(Copyright, String(), 'validThrough')
 
 // Manifestation
 
-// function Manifestation (type) {
-//   CreativeWork.call(this, COALAIP, type)
-// }
+function Manifestation (type = 'Manifestation') {
+  CreativeWork.call(this, COALAIP, type)
+}
 
-// inherit(Manifestation, CreativeWork)
-// propValue(Manifestation, AbstractWork, 'manifestationOfWork')
+inherit(Manifestation, CreativeWork)
+propValue(Manifestation, new AbstractWork(), 'manifestationOf')
 
 // MediaObject
 
-function MediaObject (type) {
-  type = type || 'MediaObject'
+function MediaObject (type = 'MediaObject') {
   CreativeWork.call(this, SCHEMA, type)
 }
 
@@ -129,8 +115,7 @@ propValue(MediaObject, String(), 'encodingFormat')
 
 // Organization
 
-function Organization (type) {
-  type = type || 'Organization'
+function Organization (type = 'Organization') {
   Party.call(this, SCHEMA, type)
 }
 
@@ -164,9 +149,7 @@ propValue(Right, String(), 'validThrough')
 
 // TransferAction
 
-function TransferAction (context, type) {
-  context = context || SCHEMA
-  type = type || 'TransferAction'
+function TransferAction (context = SCHEMA, type = 'TransferAction') {
   Action.call(this, context, type)
 }
 
@@ -192,9 +175,7 @@ propValue(ImageObject, String(), 'caption')
 
 // ReviewAction
 
-function ReviewAction (context, type) {
-  context = context || SCHEMA
-  type = type || 'ReviewAction'
+function ReviewAction (context = SCHEMA, type = 'ReviewAction') {
   AssessAction.call(this, context, type)
 }
 
@@ -232,6 +213,7 @@ module.exports = {
   AbstractWork,
   AssessAction,
   Copyright,
+  Manifestation,
   MediaObject,
   Organization,
   Person,
