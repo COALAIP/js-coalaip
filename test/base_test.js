@@ -1,33 +1,12 @@
 'use strict'
 
-const expect = require('chai').expect
-const Base = require('../src/base')
-const sort = require('../src/util').sort
+const base = require('./fixtures/base')
+const describe = require('mocha').describe
 
-const {
-  describe,
-  it
-} = require('mocha')
-
-const {
-  configureInstances,
-  validateSubInstances
-} = require('./fixtures/base')
+const tests = Object.keys(base)
 
 describe('Base', () => {
-  it('configures instances', () => {
-    configureInstances()
-  })
-  it('validates sub-instances', () => {
-    validateSubInstances()
-  })
-  it('validates tree', () => {
-    // ...
-  })
-  it('validates data', () => {
-    // ...
-  })
-  it('checks comparisons', () => {
-    // ...
+  tests.map(test => {
+    base[test]()
   })
 })
