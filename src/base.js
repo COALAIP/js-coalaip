@@ -4,6 +4,7 @@ const parse = require('./parse')
 
 const {
   isSubType,
+  order,
   sort
 } = require('./util')
 
@@ -26,28 +27,7 @@ Base.prototype.compare = function (other) {
   return sort(this.data(), other.data())
 }
 
-Base.prototype.data = function (format) {
-  let fn
-  if (format === 'ipld') {
-    fn = instance => {
-      return {
-        '/': instance.path
-      }
-    }
-  } else if (format === 'jsonld') {
-    fn = instance => {
-      return {
-        '@id': instance.path
-      }
-    }
-  } else if (!format) {
-    fn = instance => {
-      return instance.data()
-    }
-  } else {
-    throw new Error('unexpected format: ' + format)
-  }
-  const data = this._data
+const transform = function (data, fn) {
   const keys = Object.keys(data)
   const result = Object.assign({}, data)
   let j, key
@@ -63,6 +43,36 @@ Base.prototype.data = function (format) {
     }
   }
   return result
+}
+
+Base.prototype.data = function (id) {
+  let data
+  if (id) {
+    data = Object.assign({
+      [id]: this.path
+    }, this._data)
+  } else {
+    data = this._data
+  }
+  return transform(data, instance => {
+    return instance.data(id)
+  })
+}
+
+Base.prototype.dataOrdered = function (id) {
+  return order(this.data(id))
+}
+
+Base.prototype.ipld = function () {
+  return transform(this._data, instance => {
+    return {
+      '/': instance.path
+    }
+  })
+}
+
+Base.prototype.ipldOrdered = function () {
+  return order(this.ipld())
 }
 
 Base.prototype.equals = function (other) {

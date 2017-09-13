@@ -6,6 +6,7 @@ const person = require('./person')
 const musicGroup = new MusicGroup()
 musicGroup.setName('Mouse Rat')
 musicGroup.addMember(person)
+musicGroup.path = '<musicGroup path>'
 
 // const musicGroup = new MusicGroup()
 // musicGroup.withData({
