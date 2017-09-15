@@ -1,221 +1,166 @@
-# JS COALA IP Implementation
+## js-coalaip
 
-## COALA IP
+Javascript implementation for [COALA IP](https://github.com/COALAIP/specs).
 
-[COALA IP](https://www.coalaip.org) is a blockchain-ready, community-driven protocol for
-intellectual property licensing.
+### Linked Metadata
 
-[This presentation](presentations/COALA%20IP%20-%20short.pdf) gives a quick summary. [Here's](presentations/COALA%20IP%20-%20long.pdf)
-an extended version.
+This project provides opinionated tools for structuring metadata, using schema definitions with the ability to set arbitrary properties on type instances. Metadata is translatable to linked-data formats (e.g. ipld) for persistence to different databases/storage layers.
 
-[This academic paper](https://github.com/COALAIP/specs/blob/master/presentations/COALA%20IP%20Report%20-%20May%202016.pdf)
-is about how blockchains can support, complement, or supplement IP, authored by the COALA IP working
-group.
+### Module Overview
 
-[This repo](https://github.com/COALAIP/specs) has plenty more information.
+#### Core
 
+This module contains the types outlined in the specification. Additional types have been included because types in the specification inherit from them or certain properties expect other types.
 
-## Linked Data
+#### Music
 
-This project is an opinionated service for structuring metadata. By utilising the foundations of schemas and pairing that with the flexibility to set periphery values, JS COALA IP assists in the creation of [Linked Data](https://ipld.io/) by prepping the data for storage in decentralized data stores.
+This module extends the `core` module with the following music-related types: `MusicAlbum`, `MusicComposition`, `MusicGroup`, `MusicPlaylist`, `MusicRecording`, and `MusicRelease`.
 
 
-## Getting Started
-Some code to get started structuring data. In order to upload to a decentralized storage service, consider using [Constellate](https://github.com/zbo14/constellate).
+### Getting Started
+Some code to get started structuring metadata. In order to persist to a storage layer, consider using [Constellate](https://github.com/zbo14/constellate).
 
-#### Create a Person
+#### Create a `Person`
 ```js
-const man = new Person();
-man.setGivenName('John');
-man.setFamilyName('Smith');
-man.setEmail('jsmith@email.com');
+const Person = require('./src/core').Person
+
+const man = new Person()
+man.setGivenName('John')
+man.setFamilyName('Smith')
+man.setEmail('jsmith@email.com')
+man.set('arbitrary', 'value')
 
 // or if the object is already structured
 const woman = {
 	givenName: 'Jane',
 	familyName: 'Smith',
 	email: 'janesmith@email.com',
+	arbitrary: 'value'
 }
 
-const person = new Person();
-person.withData(woman);
+const person = new Person()
+person.withData(woman)
 ```
 
-#### Log a Person
+#### Access the `Person`'s data
 ```js
-console.log(JSON.stringify(man, null, 2))
+console.log(man.data())
+
 {
-  "_data": {
-    "@context": "http://schema.org",
-    "@type": "Person",
-    "givenName": "John",
-    "familyName": "Smith",
-    "email": "jsmith@email.com"
-  }
+	"@context": "http://schema.org",
+	"@type": "Person",
+	"givenName": "John",
+	"familyName": "Smith",
+	"email": "jsmith@email.com",
+	"arbitrary": "value"
+}
+
+// or if you want the data canonically ordered...
+
+console.log(man.dataOrdered())
+
+{
+	"@context": "http://schema.org",
+	"@type": "Person",
+	"arbitrary": "value",
+	"email": "jsmith@email.com",
+	"familyName": "Smith",
+	"givenName": "John"
 }
 ```
 
-#### Adding Instance to Another
+#### Add/Set sub-instances
+
+`addProperty` for property that expects an array
+
+`setProperty` for property that expects a single value
+
 ```js
+const {
+	MusicComposition,
+	MusicGroup,
+	MusicRecording
+} = require('./src/music')
+
 // member property is an Array
-const group = new MusicGroup();
-group.setName('Beatles');
-group.set('description', 'descriptive');
-group.addMember(man);
+const group = new MusicGroup()
+group.setDescription('descriptive')
+group.setName('Beatles')
+group.addMember(man)
+group.path = '<placeholder group path>'
 
 
-const composition = new MusicComposition();
-// composer property is a Person
-composition.addComposer(man);
+const composition = new MusicComposition()
+// 'composer' expects a Party
+composition.addComposer(man)
+composition.path = '<placeholder composition path>'
 
-const recording = new MusicRecording();
-// byArtist property is an Array of MusicGroups
-recording.addByArtist(group);
-// recordingOf property is a single MusicComposition
-recording.setRecordingOf(comp);
+const recording = new MusicRecording()
+// 'byArtist' expects an array of MusicGroups
+recording.addByArtist(group)
+// 'recordingOf' expects a MusicComposition
+recording.setRecordingOf(comp)
 
-console.log(recording);
-{
-  "_data": {
-    "@context": "http://coalaip.org",
-    "@type": "MusicRecording",
-    "byArtist": [
-      {
-        "_data": {
-          "@context": "http://schema.org",
-          "@type": "MusicGroup",
-          "name": "Beatles",
-          "description": "descriptive",
-          "member": [
-            {
-              "_data": {
-                "@context": "http://schema.org",
-                "@type": "Person",
-                "givenName": "John",
-                "familyName": "Smith",
-                "email": "jsmith@email.com"
-              }
-            }
-          ]
-        }
-      }
-    ],
-    "recordingOf": {
-      "_data": {
-        "@context": "http://coalaip.org",
-        "@type": "MusicComposition",
-        "composer": [
-          {
-            "_data": {
-              "@context": "http://schema.org",
-              "@type": "Person",
-              "givenName": "John",
-              "familyName": "Smith",
-              "email": "jsmith@email.com"
-            }
-          }
-        ]
-      }
-    }
-  }
-}
-```
+console.log(recording.data())
 
-
-#### Logging subInstances
-Logging subInstances provides a full list of any and all nested objects within the requested resource. They are presented in order of hierarchy to aid in the importing of the metadata to other services or data stores.
-```js
-const metadata = recording.subInstances();
-console.log(metadata);
-[
-  {
-    "_data": {
-      "@context": "http://schema.org",
-      "@type": "Person",
-      "givenName": "John",
-      "familyName": "Smith",
-      "email": "jsmith@email.com"
-    }
-  },
-  {
-    "_data": {
+{  
+  "@context": "http://coalaip.org",
+  "@type": "MusicRecording",
+  "byArtist": [  
+    {  
       "@context": "http://schema.org",
       "@type": "MusicGroup",
       "name": "Beatles",
       "description": "descriptive",
-      "member": [
-        {
-          "_data": {
-            "@context": "http://schema.org",
-            "@type": "Person",
-            "givenName": "John",
-            "familyName": "Smith",
-            "email": "jsmith@email.com"
-          }
+      "member": [  
+        {  
+          "@context": "http://schema.org",
+          "@type": "Person",
+          "givenName": "John",
+          "familyName": "Smith",
+          "email": "jsmith@email.com"
         }
       ]
     }
-  },
-  {
-    "_data": {
-      "@context": "http://coalaip.org",
-      "@type": "MusicComposition",
-      "composer": [
-        {
-          "_data": {
-            "@context": "http://schema.org",
-            "@type": "Person",
-            "givenName": "John",
-            "familyName": "Smith",
-            "email": "jsmith@email.com"
-          }
-        }
-      ]
-    }
-  },
-  {
-    "_data": {
-      "@context": "http://coalaip.org",
-      "@type": "MusicRecording",
-      "byArtist": [
-        {
-          "_data": {
-            "@context": "http://schema.org",
-            "@type": "MusicGroup",
-            "name": "Beatles",
-            "description": "descriptive",
-            "member": [
-              {
-                "_data": {
-                  "@context": "http://schema.org",
-                  "@type": "Person",
-                  "givenName": "John",
-                  "familyName": "Smith",
-                  "email": "jsmith@email.com"
-                }
-              }
-            ]
-          }
-        }
-      ],
-      "recordingOf": {
-        "_data": {
-          "@context": "http://coalaip.org",
-          "@type": "MusicComposition",
-          "composer": [
-            {
-              "_data": {
-                "@context": "http://schema.org",
-                "@type": "Person",
-                "givenName": "John",
-                "familyName": "Smith",
-                "email": "jsmith@email.com"
-              }
-            }
-          ]
-        }
+  ],
+  "recordingOf": {  
+    "@context": "http://coalaip.org",
+    "@type": "MusicComposition",
+    "composer": [  
+      {  
+        "@context": "http://schema.org",
+        "@type": "Person",
+        "givenName": "John",
+        "familyName": "Smith",
+        "email": "jsmith@email.com"
       }
-    }
+    ]
   }
-]
+}
+
+// and the ipld...
+
+console.log(recording.ipld())
+
+{  
+  "@context": "http://coalaip.org",
+  "@type": "MusicRecording",
+  "byArtist": [  
+    {  
+      "/": "<placeholder group path>"
+    }
+  ],
+  "recordingOf": {  
+    "/": "<placeholder composition path>"
+  }
+}
+```
+
+#### Access sub-instances
+`instance.subInstances()` returns a flattened array of unique instances that are nested within `instance`. They are ordered hierarchically to ease handling of metadata in other programs.
+```js
+const metadata = recording.subInstances()
+console.log(metadata)
+
+[man, group, composition, recording]
 ```
