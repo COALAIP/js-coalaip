@@ -115,7 +115,7 @@ Base.prototype.tree = function (key = '') {
   const arr = []
   const data = this._data
   const keys = Object.keys(data)
-  let i, j, sub
+  let i, j
   for (i = 0; i < keys.length; i++) {
     if (isSubType(data[keys[i]], new Base())) {
       arr.push(...data[keys[i]].tree(key + '/' + keys[i]))

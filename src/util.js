@@ -49,7 +49,7 @@ exports.orderStringify = (x, space) => {
     return JSON.stringify(x, keys.sort(), space)
 }
 
-exports.propArray = (cls, expected, key, fn) => {
+exports.propArray = (cls, expected, key) => {
   const capitalized = exports.capitalize(key)
   cls.prototype['get' + capitalized] = function () {
     return this._data[key]

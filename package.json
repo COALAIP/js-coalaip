@@ -9,6 +9,10 @@
     "mocha": "^3.5.0"
   },
   "scripts": {
+    "lint": "./node_modules/.bin/eslint src",
     "test": "./node_modules/.bin/mocha --reporter spec"
+  },
+  "devDependencies": {
+    "eslint": "^4.7.1"
   }
 }
