@@ -135,11 +135,10 @@ Base.prototype.tree = function (key = '') {
   return arr
 }
 
-Base.prototype.withData = function (data, ...modules) {
-  const registry = Object.assign({}, ...modules)
+Base.prototype.withData = function (data) {
   delete data['@context']
   delete data['@type']
-  parse(data, registry, [], this)
+  parse(data, this)
 }
 
 module.exports = Base

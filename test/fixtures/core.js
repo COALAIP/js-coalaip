@@ -2,23 +2,85 @@
 
 const Base = require('../../src/base')
 const core = require('../../src/core')
+const newPath = require('./new-path')
 
 const {
   COALAIP,
   SCHEMA
 } = require('../../src/util')
 
+const thing = new core.Thing()
+thing.path = newPath('thing')
+
+const action = new core.Action()
+action.path = newPath('action')
+
+const creativeWork = new core.CreativeWork()
+creativeWork.path = newPath('creativeWork')
+
+const intangible = new core.Intangible()
+intangible.path = newPath('intangible')
+
+const party = new core.Party()
+party.path = newPath('party')
+
+const place = new core.Place()
+place.path = newPath('place')
+
+const abstractWork = new core.AbstractWork()
+abstractWork.path = newPath('abstractWork')
+
+const assessAction = new core.AssessAction()
+assessAction.path = newPath('assessAction')
+
+const copyright = new core.Copyright()
+copyright.path = newPath('copyright')
+
+const manifestation = new core.Manifestation()
+manifestation.path = newPath('manifestation')
+
+const organization = new core.Organization()
+organization.path = newPath('organization')
+
+const person = new core.Person()
+person.path = newPath('person')
+
+const right = new core.Right()
+right.path = newPath('right')
+
+const mediaObject = new core.MediaObject()
+mediaObject.path = newPath('mediaObject')
+
+const reviewAction = new core.ReviewAction()
+reviewAction.path = newPath('reviewAction')
+
+const transferAction = new core.TransferAction()
+transferAction.path = newPath('transferAction')
+
+const rightsTransferAction = new core.RightsTransferAction()
+rightsTransferAction.path = newPath('rightsTransferAction')
+
+const audioObject = new core.AudioObject()
+audioObject.path = newPath('audioObject')
+
+const imageObject = new core.ImageObject()
+imageObject.path = newPath('imageObject')
+
+const videoObject = new core.VideoObject()
+videoObject.path = newPath('videoObject')
+
+
 exports.Thing = {
   context: SCHEMA,
   type: 'Thing',
-  instance: new core.Thing(),
+  instance: thing,
   parents: [
     Base
   ],
   add: {
-    audio: new core.AudioObject(),
-    image: new core.ImageObject(),
-    video: new core.VideoObject()
+    audio: audioObject,
+    image: imageObject,
+    video: videoObject
   },
   set: {
     description: 'descriptive',
@@ -29,7 +91,7 @@ exports.Thing = {
 exports.Action = {
   context: SCHEMA,
   type: 'Action',
-  instance: new core.Action(),
+  instance: action,
   parents: [
     Base,
     core.Thing
@@ -43,15 +105,15 @@ exports.Action = {
 exports.CreativeWork = {
   context: SCHEMA,
   type: 'CreativeWork',
-  instance: new core.CreativeWork(),
+  instance: creativeWork,
   parents: [
     Base,
     core.Thing
   ],
   add: {
     genre: 'slimecore',
-    producer: new core.Party(),
-    publisher: new core.Party()
+    producer: party,
+    publisher: party
   },
   set: {
     name: 'creativeWork'
@@ -61,7 +123,7 @@ exports.CreativeWork = {
 exports.Intangible = {
   context: SCHEMA,
   type: 'Intangible',
-  instance: new core.Intangible(),
+  instance: intangible,
   parents: [
     Base,
     core.Thing
@@ -74,7 +136,7 @@ exports.Intangible = {
 exports.Party = {
   context: COALAIP,
   type: 'Party',
-  instance: new core.Party(),
+  instance: party,
   parents: [
     Base,
     core.Thing
@@ -88,7 +150,7 @@ exports.Party = {
 exports.Place = {
   context: SCHEMA,
   type: 'Place',
-  instance: new core.Place(),
+  instance: place,
   parents: [
     Base,
     core.Thing
@@ -101,7 +163,7 @@ exports.Place = {
 exports.AbstractWork = {
   context: COALAIP,
   type: 'AbstractWork',
-  instance: new core.AbstractWork(),
+  instance: abstractWork,
   parents: [
     Base,
     core.Thing,
@@ -109,8 +171,8 @@ exports.AbstractWork = {
   ],
   add: {
     genre: 'slimecore',
-    producer: new core.Party(),
-    publisher: new core.Party()
+    producer: party,
+    publisher: party
   },
   set: {
     name: 'abstractWork'
@@ -120,7 +182,7 @@ exports.AbstractWork = {
 exports.AssessAction = {
   context: SCHEMA,
   type: 'AssessAction',
-  instance: new core.AssessAction(),
+  instance: assessAction,
   parents: [
     Base,
     core.Thing,
@@ -135,7 +197,7 @@ exports.AssessAction = {
 exports.Copyright = {
   context: COALAIP,
   type: 'Copyright',
-  instance: new core.Copyright(),
+  instance: copyright,
   parents: [
     Base,
     core.Thing,
@@ -143,8 +205,8 @@ exports.Copyright = {
   ],
   set: {
     name: 'copyright',
-    rightsOf: new core.CreativeWork(),
-    territory: new core.Place(),
+    rightsOf: creativeWork,
+    territory: place,
     validFrom: '2018-01-01',
     validThrough: '2088-01-01'
   }
@@ -153,14 +215,14 @@ exports.Copyright = {
 exports.Manifestation = {
   context: COALAIP,
   type: 'Manifestation',
-  instance: new core.Manifestation,
+  instance: manifestation,
   parents: [
     Base,
     core.Thing,
     core.CreativeWork
   ],
   set: {
-    manifestationOf: new core.AbstractWork(),
+    manifestationOf: abstractWork,
     name: 'manifestation'
   }
 }
@@ -168,7 +230,7 @@ exports.Manifestation = {
 exports.MediaObject = {
   context: SCHEMA,
   type: 'MediaObject',
-  instance: new core.MediaObject(),
+  instance: mediaObject,
   parents: [
     Base,
     core.Thing,
@@ -176,8 +238,8 @@ exports.MediaObject = {
   ],
   add: {
     genre: 'slimecore',
-    producer: new core.Party(),
-    publisher: new core.Party()
+    producer: party,
+    publisher: party
   },
   set: {
     contentUrl: 'http://my-media.com',
@@ -189,14 +251,14 @@ exports.MediaObject = {
 exports.Organization = {
   context: SCHEMA,
   type: 'Organization',
-  instance: new core.Organization(),
+  instance: organization,
   parents: [
     Base,
     core.Thing,
     core.Party
   ],
   add: {
-    member: new core.Party()
+    member: party
   },
   set: {
     email: 'me@example.org',
@@ -207,7 +269,7 @@ exports.Organization = {
 exports.Person = {
   context: SCHEMA,
   type: 'Person',
-  instance: new core.Person(),
+  instance: person,
   parents: [
     Base,
     core.Thing,
@@ -224,18 +286,18 @@ exports.Person = {
 exports.Right = {
   context: COALAIP,
   type: 'Right',
-  instance: new core.Right(),
+  instance: right,
   parents: [
     Base,
     core.Thing,
     core.Intangible
   ],
   set: {
-    license: new core.CreativeWork(),
+    license: creativeWork,
     name: 'right',
     percentageShares: Number(),
-    source: new core.Copyright(),
-    territory: new core.Place(),
+    source: copyright,
+    territory: place,
     validFrom: '2018-01-01',
     validThrough: '2088-01-01'
   }
@@ -244,7 +306,7 @@ exports.Right = {
 exports.TransferAction = {
   context: SCHEMA,
   type: 'TransferAction',
-  instance: new core.TransferAction(),
+  instance: transferAction,
   parents: [
     Base,
     core.Thing,
@@ -259,7 +321,7 @@ exports.TransferAction = {
 exports.AudioObject = {
   context: SCHEMA,
   type: 'AudioObject',
-  instance: new core.AudioObject(),
+  instance: audioObject,
   parents: [
     Base,
     core.Thing,
@@ -268,8 +330,8 @@ exports.AudioObject = {
   ],
   add: {
     genre: 'slimecore',
-    producer: new core.Party(),
-    publisher: new core.Party()
+    producer: party,
+    publisher: party
   },
   set: {
     contentUrl: 'http://my-media.com',
@@ -282,7 +344,7 @@ exports.AudioObject = {
 exports.ImageObject = {
   context: SCHEMA,
   type: 'ImageObject',
-  instance: new core.ImageObject(),
+  instance: imageObject,
   parents: [
     Base,
     core.Thing,
@@ -291,8 +353,8 @@ exports.ImageObject = {
   ],
   add: {
     genre: 'Baroque',
-    producer: new core.Party(),
-    publisher: new core.Party()
+    producer: party,
+    publisher: party
   },
   set: {
     caption: 'woah',
@@ -305,7 +367,7 @@ exports.ImageObject = {
 exports.ReviewAction =  {
   context: SCHEMA,
   type: 'ReviewAction',
-  instance: new core.ReviewAction(),
+  instance: reviewAction,
   parents: [
     Base,
     core.Thing,
@@ -313,8 +375,8 @@ exports.ReviewAction =  {
     core.AssessAction
   ],
   set: {
-    asserter: new core.Party(),
-    assertionSubject: new core.Thing(),
+    asserter: party,
+    assertionSubject: thing,
     assertionTruth: false,
     error: 'erroneous',
     name: 'reviewAction',
@@ -326,7 +388,7 @@ exports.ReviewAction =  {
 exports.RightsTransferAction =  {
   context: COALAIP,
   type: 'RightsTransferAction',
-  instance: new core.RightsTransferAction(),
+  instance: rightsTransferAction,
   parents: [
     Base,
     core.Thing,
@@ -336,14 +398,14 @@ exports.RightsTransferAction =  {
   set: {
     error: 'erroneous',
     name: 'rightsTransferAction',
-    transferContract: new core.CreativeWork()
+    transferContract: creativeWork
   }
 }
 
 exports.VideoObject = {
   context: SCHEMA,
   type: 'VideoObject',
-  instance: new core.VideoObject(),
+  instance: videoObject,
   parents: [
     Base,
     core.Thing,
@@ -352,8 +414,8 @@ exports.VideoObject = {
   ],
   add: {
     genre: 'horror',
-    producer: new core.Party(),
-    publisher: new core.Party()
+    producer: party,
+    publisher: party
   },
   set: {
     contentUrl: 'http://my-media.com',

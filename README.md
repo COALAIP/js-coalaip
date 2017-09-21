@@ -4,7 +4,7 @@ Javascript implementation for [COALA IP](https://github.com/COALAIP/specs).
 
 ### Linked Metadata
 
-This project provides tools for structuring metadata, using schema definitions with the ability to set arbitrary properties on type instances. Metadata is translatable to linked-data formats (e.g. ipld) for persistence to different databases/storage layers.
+This project provides tools for structuring metadata, using schema definitions with the ability to set arbitrary properties on type instances. Metadata is translatable to linked-data formats (e.g. [IPLD](https://ipld.io/)) for persistence to different databases/storage layers.
 
 ### Module Overview
 

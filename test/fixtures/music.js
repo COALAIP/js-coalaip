@@ -2,6 +2,7 @@
 
 const Base = require('../../src/base')
 const core = require('../../src/core')
+const newPath = require('./new-path')
 
 const {
   COALAIP,
@@ -17,21 +18,42 @@ const {
   MusicRelease
 } = require('../../src/music')
 
+const party = new core.Party()
+party.path = newPath('party')
+
+const musicComposition = new MusicComposition()
+musicComposition.path = newPath('musicComposition')
+
+const musicGroup = new MusicGroup()
+musicGroup.path = newPath('musicGroup')
+
+const musicRecording = new MusicRecording()
+musicRecording.path = newPath('musicRecording')
+
+const musicPlaylist = new MusicPlaylist()
+musicPlaylist.path = newPath('musicPlaylist')
+
+const musicAlbum = new MusicAlbum()
+musicAlbum.path = newPath('musicAlbum')
+
+const musicRelease = new MusicRelease()
+musicRelease.path = newPath('musicRelease')
+
 exports.MusicComposition = {
   context: COALAIP,
   type: 'MusicComposition',
-  instance: new MusicComposition(),
+  instance: musicComposition,
   parents: [
     Base,
     core.Thing,
     core.CreativeWork
   ],
   add: {
-    composer: new core.Party(),
+    composer: party,
     genre: 'slimecore',
-    lyricist: new core.Party(),
-    producer: new core.Party(),
-    publisher: new core.Party()
+    lyricist: party,
+    producer: party,
+    publisher: party
   },
   set: {
     iswcCode: 'T-123.456.789-Z',
@@ -42,7 +64,7 @@ exports.MusicComposition = {
 exports.MusicGroup = {
   context: SCHEMA,
   type: 'MusicGroup',
-  instance: new MusicGroup(),
+  instance: musicGroup,
   parents: [
     Base,
     core.Thing,
@@ -51,7 +73,7 @@ exports.MusicGroup = {
   ],
   add: {
     genre: 'ska',
-    member: new core.Party()
+    member: party
   },
   set: {
     email: 'me@example.org',
@@ -62,7 +84,7 @@ exports.MusicGroup = {
 exports.MusicRecording = {
   context: COALAIP,
   type: 'MusicRecording',
-  instance: new MusicRecording(),
+  instance: musicRecording,
   parents: [
     Base,
     core.Thing,
@@ -70,22 +92,22 @@ exports.MusicRecording = {
     core.Manifestation
   ],
   add: {
-    byArtist: new MusicGroup(),
+    byArtist: musicGroup,
     genre: 'slimecore',
-    producer: new core.Party(),
-    publisher: new core.Party()
+    producer: party,
+    publisher: party
   },
   set: {
     isrcCode: '',
     name: 'musicRecording',
-    recordingOf: new MusicComposition()
+    recordingOf: musicComposition
   }
 }
 
 exports.MusicPlaylist = {
   context: SCHEMA,
   type: 'MusicPlaylist',
-  instance: new MusicPlaylist(),
+  instance: musicPlaylist,
   parents: [
     Base,
     core.Thing,
@@ -93,9 +115,9 @@ exports.MusicPlaylist = {
   ],
   add: {
     genre: 'slimecore',
-    producer: new core.Party(),
-    publisher: new core.Party(),
-    track: new MusicRecording()
+    producer: party,
+    publisher: party,
+    track: musicRecording
   },
   set: {
     name: 'musicPlaylist'
@@ -105,7 +127,7 @@ exports.MusicPlaylist = {
 exports.MusicAlbum = {
   context: SCHEMA,
   type: 'MusicAlbum',
-  instance: new MusicAlbum(),
+  instance: musicAlbum,
   parents: [
     Base,
     core.Thing,
@@ -113,11 +135,11 @@ exports.MusicAlbum = {
     MusicPlaylist
   ],
   add: {
-    byArtist: new MusicGroup(),
+    byArtist: musicGroup,
     genre: 'slimecore',
-    producer: new core.Party(),
-    publisher: new core.Party(),
-    track: new MusicRecording()
+    producer: party,
+    publisher: party,
+    track: musicRecording
   },
   set: {
     albumProductionType: 'DemoAlbum',
@@ -128,7 +150,7 @@ exports.MusicAlbum = {
 exports.MusicRelease = {
   context: SCHEMA,
   type: 'MusicRelease',
-  instance: new MusicRelease(),
+  instance: musicRelease,
   parents: [
     Base,
     core.Thing,
@@ -137,15 +159,15 @@ exports.MusicRelease = {
   ],
   add: {
     genre: 'slimecore',
-    producer: new core.Party(),
-    publisher: new core.Party(),
-    recordLabel: new core.Party(),
-    track: new MusicRecording()
+    producer: party,
+    publisher: party,
+    recordLabel: party,
+    track: musicRecording
   },
   set: {
     catalogNumber: '12345',
     musicReleaseFormat: 'vinyl',
     name: 'musicRelease',
-    releaseOf: new MusicAlbum()
+    releaseOf: musicAlbum
   }
 }

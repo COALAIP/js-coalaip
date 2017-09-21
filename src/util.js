@@ -73,6 +73,7 @@ exports.propArray = (cls, expected, key) => {
     }
     data[key].push(actual)
   }
+  cls.prototype['type' + capitalized] = expected.constructor
 }
 
 exports.propValue = (cls, expected, key) => {
@@ -86,6 +87,7 @@ exports.propValue = (cls, expected, key) => {
     }
     this._data[key] = actual
   }
+  cls.prototype['type' + capitalized] = expected.constructor
 }
 
 exports.sort = (x, y) => {

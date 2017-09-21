@@ -2,8 +2,6 @@
 
 const expect = require('chai').expect
 const capitalize = require('../../src/util').capitalize
-const core = require('../../src/core')
-const music = require('../../src/music')
 const parse = require('../../src/parse')
 
 const {
@@ -62,12 +60,21 @@ const setValues = module => {
   })
 }
 
-const registry = Object.assign({}, core, music)
-
 const parseData = module => {
   return it('parses data', () => {
     const data = module.instance.data()
-    const other = parse(data, registry)
+    const instance = new module.instance.constructor()
+    const other = parse(data, instance)
+    const bool = module.instance.equals(other)
+    expect(bool).to.be.true
+  })
+}
+
+const parseIPLD = module => {
+  return it('parses IPLD', () => {
+    const ipld = module.instance.ipld()
+    const instance = new module.instance.constructor()
+    const other = parse(ipld, instance)
     const bool = module.instance.equals(other)
     expect(bool).to.be.true
   })
@@ -84,5 +91,6 @@ module.exports = module => {
       setValues(module)
     }
     parseData(module)
+    parseIPLD(module)
   })
 }

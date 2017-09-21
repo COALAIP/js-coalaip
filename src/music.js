@@ -63,7 +63,7 @@ function MusicAlbum () {
 
 inherit(MusicAlbum, MusicPlaylist)
 propValue(MusicAlbum, String(), 'albumProductionType')
-propArray(MusicAlbum, new Party(), 'byArtist')
+propArray(MusicAlbum, new MusicGroup(), 'byArtist')
 
 // MusicRelease
 

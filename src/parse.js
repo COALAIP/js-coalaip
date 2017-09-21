@@ -5,13 +5,8 @@ const {
   sort
 } = require('./util')
 
-function parse (data, registry, subInstances, instance) {
-  if (!instance) {
-    const cls = registry[data['@type']]
-    instance = new cls()
-  }
+function parse (data, instance, subInstances = []) {
   const keys = Object.keys(data)
-  subInstances = subInstances || []
   let i, j, key, method
   for (i = 0; i < keys.length; i++) {
     key = keys[i]
@@ -20,21 +15,21 @@ function parse (data, registry, subInstances, instance) {
       if (data[key] instanceof Array) {
         for (j = 0; j < data[key].length; j++) {
           if (data[key][j].constructor === Object) {
-            parseSubInstance(data[key][j], instance, method, registry, subInstances)
+            parseSubInstance(capitalized, data[key][j], instance, method, subInstances)
           } else {
             instance[method](data[key][j])
           }
         }
       } else {
         if (data[key].constructor === Object) {
-          parseSubInstance(data[key], instance, method, registry, subInstances)
+          parseSubInstance(capitalized, data[key], instance, method, subInstances)
         } else {
           instance[method](data[key])
         }
       }
     } else if (instance[method = 'set' + capitalized]) {
       if (data[key].constructor === Object) {
-        parseSubInstance(data[key], instance, method, registry, subInstances)
+        parseSubInstance(capitalized, data[key], instance, method, subInstances)
       } else {
         instance[method](data[key])
       }
@@ -45,16 +40,23 @@ function parse (data, registry, subInstances, instance) {
   return instance
 }
 
-function parseSubInstance (data, instance, method, registry, subInstances) {
+function parseSubInstance (capitalized, data, instance, method, subInstances) {
   for (let i = 0; i < subInstances.length; i++) {
     if (!sort(data, subInstances[i]._data)) {
       instance[method](subInstances[i])
       return
     }
   }
-  const parsed = parse(data, registry, subInstances)
-  instance[method](parsed)
-  subInstances.push(parsed)
+  const cls = instance['type' + capitalized]
+  let result
+  if (data['/'] && Object.keys(data).length === 1) {
+    result = new cls()
+    result.path = data['/']
+  } else {
+    result = parse(data, new cls(), subInstances)
+  }
+  instance[method](result)
+  subInstances.push(result)
 }
 
 module.exports = parse
