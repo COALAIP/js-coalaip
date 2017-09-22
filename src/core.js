@@ -51,8 +51,8 @@ inherit(Intangible, Thing)
 
 // Party
 
-function Party (context = COALAIP, type = 'Party') {
-  Thing.call(this, context, type)
+function Party (type = 'Party') {
+  Thing.call(this, COALAIP, type)
 }
 
 inherit(Party, Thing)
@@ -116,7 +116,7 @@ propValue(MediaObject, String(), 'encodingFormat')
 // Organization
 
 function Organization (type = 'Organization') {
-  Party.call(this, SCHEMA, type)
+  Party.call(this, type)
 }
 
 inherit(Organization, Party)
@@ -126,7 +126,7 @@ propArray(Organization, new Party(), 'member')
 // Person
 
 function Person () {
-  Party.call(this, SCHEMA, 'Person')
+  Party.call(this, 'Person')
 }
 
 inherit(Person, Party)

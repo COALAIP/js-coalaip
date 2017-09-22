@@ -249,7 +249,7 @@ exports.MediaObject = {
 }
 
 exports.Organization = {
-  context: SCHEMA,
+  context: COALAIP,
   type: 'Organization',
   instance: organization,
   parents: [
@@ -267,7 +267,7 @@ exports.Organization = {
 }
 
 exports.Person = {
-  context: SCHEMA,
+  context: COALAIP,
   type: 'Person',
   instance: person,
   parents: [

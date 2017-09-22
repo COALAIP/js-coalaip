@@ -62,7 +62,7 @@ exports.MusicComposition = {
 }
 
 exports.MusicGroup = {
-  context: SCHEMA,
+  context: COALAIP,
   type: 'MusicGroup',
   instance: musicGroup,
   parents: [
