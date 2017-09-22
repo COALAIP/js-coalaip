@@ -12,9 +12,11 @@ const instances = []
 
 exports.configureInstances = () => {
   it('configures instances', () => {
-    let i, j
+    let i, instance, j
     for (i = 0; i < numInstances; i++) {
-      instances.push(new Base(context, type))
+      instance = new Base(context, type)
+      instance.path = `<instance${i} path>`
+      instances.push(instance)
     }
     for (i = numInstances-1; i >= 0; i--) {
       for (j = i-1; j >= 0; j--) {
@@ -56,6 +58,30 @@ exports.validateData = () => {
       '@type': type
     }
     expect(actual).to.deep.equal(expected)
+  })
+}
+
+exports.validateParseData = () => {
+  it('validates data parsing', () => {
+    instances.forEach(instance => {
+      const other = new instance.constructor()
+      other.withData(instance.data())
+      other.set('@context', context)
+      other.set('@type', type)
+      expect(other.data()).to.deep.equal(instance.data())
+    })
+  })
+}
+
+exports.validateParseIPLD = () => {
+  it('validates IPLD parsing', () => {
+    instances.forEach(instance => {
+      const other = new instance.constructor()
+      other.withData(instance.ipld())
+      other.set('@context', context)
+      other.set('@type', type)
+      expect(other.ipld()).to.deep.equal(instance.ipld())
+    })
   })
 }
 

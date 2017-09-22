@@ -90,7 +90,7 @@ group.addMember(man)
 group.path = '<placeholder group path>'
 
 const composition = new MusicComposition()
-// 'composer' expects a Party
+// 'composer' expects an array of Parties
 composition.addComposer(man)
 composition.path = '<placeholder composition path>'
 
