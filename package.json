@@ -14,16 +14,10 @@
     "test": "./node_modules/.bin/mocha --reporter spec"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-preset-env": "^1.6.1",
-    "browserify": "^14.5.0",
     "eslint": "^4.7.1",
     "gulp": "^3.9.1",
-    "gulp-babel": "^7.0.0",
-    "gulp-uglify": "^3.0.0",
-    "gulp-util": "^3.0.8",
-    "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.1.0"
+    "gulp-babel": "^7.0.0"
   }
 }
