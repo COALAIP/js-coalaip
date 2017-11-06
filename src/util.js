@@ -20,6 +20,13 @@ const isSameType = (x, y) => {
   return getType(x) === getType(y)
 }
 
+const hasSameType = (x, y) => {
+  if (!x._data || !y._data) {
+    return false
+  }
+  return (x._data['@type'] && y._data['@type'] && (x._data['@type'] === y._data['@type']));
+};
+
 exports.capitalize = str => {
   return str.charAt(0).toUpperCase() + str.slice(1)
 }
@@ -30,7 +37,7 @@ exports.inherit = (child, parent) => {
 }
 
 exports.isSubType = (child, parent) => {
-  return (typeof parent === 'object' && child instanceof parent.constructor) || isSameType(child, parent)
+  return (typeof parent === 'object' && child instanceof parent.constructor) || isSameType(child, parent) || hasSameType(child, parent)
 }
 
 exports.order = x => {
