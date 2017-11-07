@@ -29,6 +29,13 @@ var hasSameType = function hasSameType(x, y) {
   return x._data['@type'] && y._data['@type'] && x._data['@type'] === y._data['@type'];
 };
 
+var isCoalaObjectAndComparingToBase = function isCoalaObjectAndComparingToBase(x, y) {
+  if (!x._data || y.constructor.name !== 'Base') {
+    return false;
+  }
+  return '@type' in x._data && '@context' in x._data;
+};
+
 exports.capitalize = function (str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
@@ -39,7 +46,7 @@ exports.inherit = function (child, parent) {
 };
 
 exports.isSubType = function (child, parent) {
-  return (typeof parent === 'undefined' ? 'undefined' : _typeof(parent)) === 'object' && child instanceof parent.constructor || isSameType(child, parent) || hasSameType(child, parent);
+  return (typeof parent === 'undefined' ? 'undefined' : _typeof(parent)) === 'object' && child instanceof parent.constructor || isSameType(child, parent) || hasSameType(child, parent) || isCoalaObjectAndComparingToBase(child, parent);
 };
 
 exports.order = function (x) {
