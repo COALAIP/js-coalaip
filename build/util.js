@@ -30,7 +30,9 @@ var hasSameType = function hasSameType(x, y) {
 };
 
 var isCoalaObjectAndComparingToBase = function isCoalaObjectAndComparingToBase(x, y) {
-  if (!x._data || y.constructor.name !== 'Base') {
+  var dataInY = y._data;
+  var undefinedTypeAndContextInY = typeof y._data['@type'] === 'undefined' && typeof y._data['@context'] === 'undefined';
+  if (!x._data || !dataInY || !undefinedTypeAndContextInY) {
     return false;
   }
   return '@type' in x._data && '@context' in x._data;

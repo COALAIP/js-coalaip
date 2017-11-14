@@ -28,7 +28,9 @@ const hasSameType = (x, y) => {
 };
 
 const isCoalaObjectAndComparingToBase = (x, y) => {
-  if (!x._data || y.constructor.name !== 'Base') {
+  const dataInY = y._data
+  const undefinedTypeAndContextInY = (typeof y._data['@type'] === 'undefined' && typeof y._data['@context'] === 'undefined')
+  if (!x._data || !dataInY || !undefinedTypeAndContextInY) {
     return false;
   }
   return ('@type' in x._data && '@context' in x._data)
