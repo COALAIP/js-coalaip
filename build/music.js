@@ -54,6 +54,7 @@ inherit(MusicRecording, Manifestation);
 propArray(MusicRecording, new MusicGroup(), 'byArtist');
 propValue(MusicRecording, String(), 'isrcCode');
 propValue(MusicRecording, new MusicComposition(), 'recordingOf');
+propValue(MusicRecording, Number(), 'position');
 
 // MusicAlbum
 
