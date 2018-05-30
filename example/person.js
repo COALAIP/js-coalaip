@@ -1,6 +1,6 @@
 'use strict'
 
-const Person = require('../src/core').Person
+const Person = require('../lib/core').Person
 
 const person = new Person()
 person.setFamilyName('Dwyer')
