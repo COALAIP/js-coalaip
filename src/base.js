@@ -9,14 +9,12 @@ const {
 } = require('./util')
 
 function Base (context, type) {
-  this._data = {
-    '@context': context,
-    '@type': type
-  }
+  this['@context'] = context;
+  this['@type'] = type;
 }
 
 Base.prototype.add = function (key, val) {
-  const data = this._data
+  const data = this
   if (!data[key]) {
     data[key] = []
   }
@@ -50,9 +48,9 @@ Base.prototype.data = function (id) {
   if (id) {
     data = Object.assign({
       [id]: this.path
-    }, this._data)
+    }, this)
   } else {
-    data = this._data
+    data = this
   }
   return transform(data, instance => {
     return instance.data(id)
@@ -64,7 +62,7 @@ Base.prototype.dataOrdered = function (id) {
 }
 
 Base.prototype.ipld = function () {
-  return transform(this._data, instance => {
+  return transform(this, instance => {
     return {
       '/': instance.path
     }
@@ -80,7 +78,7 @@ Base.prototype.equals = function (other) {
 }
 
 Base.prototype.rm = function (key, idx) {
-  const data = this._data
+  const data = this
   if (!data[key]) {
     throw new Error(`could not find key="${key}"`)
   }
@@ -92,7 +90,7 @@ Base.prototype.rm = function (key, idx) {
 }
 
 Base.prototype.set = function (key, val) {
-  this._data[key] = val
+  this[key] = val
 }
 
 Base.prototype.subInstances = function () {
@@ -113,7 +111,7 @@ Base.prototype.subInstances = function () {
 
 Base.prototype.tree = function (key = '') {
   const arr = []
-  const data = this._data
+  const data = this
   const keys = Object.keys(data)
   let i, j
   for (i = 0; i < keys.length; i++) {
