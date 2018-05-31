@@ -31,6 +31,8 @@ const transform = function (data, fn) {
   let j, key
   for (let i = 0; i < keys.length; i++) {
     key = keys[i]
+
+
     if (isSubType(data[key], new Base())) {
       result[key] = fn(data[key])
     } else if (data[key] instanceof Array && isSubType(data[key][0], new Base())) {
@@ -45,6 +47,7 @@ const transform = function (data, fn) {
 
 Base.prototype.data = function (id) {
   let data
+  let self = this
   if (id) {
     data = Object.assign({
       [id]: this.path
@@ -53,13 +56,11 @@ Base.prototype.data = function (id) {
     data = this
   }
   return transform(data, instance => {
-    if (!instance.data) {
-      console.log('instance without data', instance)
-      console.log('id', id)
-      console.log('typeof instance', typeof instance)
+    if (instance.data) {
+      return instance.data(id)
+    } else {
+      return instance
     }
-
-    return instance.data(id)
   })
 }
 
