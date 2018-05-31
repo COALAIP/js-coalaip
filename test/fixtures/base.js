@@ -6,6 +6,7 @@ const it = require('mocha').it
 
 const context = '<context placeholder>'
 const type = '<type placeholder>'
+const path = '<instance* path>'
 
 const numInstances = 10
 const instances = []
@@ -45,6 +46,7 @@ exports.validateData = () => {
       expected = {
         '@context': context,
         '@type': type,
+        path: `<instance${i} path>`,
         subInstances: []
       }
       for (j = i-1; j >= 0; j--) {
@@ -55,7 +57,8 @@ exports.validateData = () => {
     actual = instances[i].data()
     expected = {
       '@context': context,
-      '@type': type
+      '@type': type,
+      path: `<instance${i} path>`
     }
     expect(actual).to.deep.equal(expected)
   })
@@ -68,6 +71,9 @@ exports.validateParseData = () => {
       other.withData(instance.data())
       other.set('@context', context)
       other.set('@type', type)
+      // console.log('instance.data()', instance.data())
+      // console.log('other', other);
+      // console.log('other.data()', other.data());
       expect(other.data()).to.deep.equal(instance.data())
     })
   })
@@ -89,7 +95,7 @@ exports.validateSubInstances = () => {
   it('validates sub-instances', () => {
     let actual, expected
     for (let i = numInstances-1; i >= 0; i--) {
-      actual = instances[i].subInstances()
+      actual = instances[i].getSubInstances()
       expected = instances.slice(0, i+1)
       expect(actual).to.deep.equal(expected)
     }
@@ -101,7 +107,7 @@ exports.validateTree = () => {
     let actual, expected
     for (let i = numInstances-1; i >= 0; i--) {
       actual = instances[i].tree()
-      expected = instances[i].subInstances().slice(0, -1).reduce((result, instance) => {
+      expected = instances[i].getSubInstances().slice(0, -1).reduce((result, instance) => {
         return instance.tree().concat(result)
       }, [])
       expected.forEach(obj => {

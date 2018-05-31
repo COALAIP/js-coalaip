@@ -1,6 +1,6 @@
 'use strict'
 
-const MusicComposition = require('../lib/music').MusicComposition
+const MusicComposition = require('../src/music').MusicComposition
 const person = require('./person')
 
 const composition = new MusicComposition()

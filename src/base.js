@@ -53,6 +53,12 @@ Base.prototype.data = function (id) {
     data = this
   }
   return transform(data, instance => {
+    if (!instance.data) {
+      console.log('instance without data', instance)
+      console.log('id', id)
+      console.log('typeof instance', typeof instance)
+    }
+
     return instance.data(id)
   })
 }
@@ -93,7 +99,7 @@ Base.prototype.set = function (key, val) {
   this[key] = val
 }
 
-Base.prototype.subInstances = function () {
+Base.prototype.getSubInstances = function () {
   const tree = this.tree()
   let i, j
   for (i = 0; i < tree.length; i++) {

@@ -11,8 +11,8 @@ const {
 
 const checkContextAndType = module => {
   return it('checks context and type', () => {
-    const bool = module.instance._data['@context'] === module.context &&
-                 module.instance._data['@type'] === module.type
+    const bool = module.instance['@context'] === module.context &&
+                 module.instance['@type'] === module.type
     expect(bool).to.be.true
   })
 }

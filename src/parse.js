@@ -34,7 +34,7 @@ function parse (data, instance, subInstances = []) {
         instance[method](data[key])
       }
     } else {
-      instance._data[key] = data[key]
+      instance[key] = data[key]
     }
   }
   return instance
@@ -42,7 +42,7 @@ function parse (data, instance, subInstances = []) {
 
 function parseSubInstance (capitalized, data, instance, method, subInstances) {
   for (let i = 0; i < subInstances.length; i++) {
-    if (!sort(data, subInstances[i]._data)) {
+    if (!sort(data, subInstances[i])) {
       instance[method](subInstances[i])
       return
     }
