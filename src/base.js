@@ -31,8 +31,6 @@ const transform = function (data, fn) {
   let j, key
   for (let i = 0; i < keys.length; i++) {
     key = keys[i]
-
-
     if (isSubType(data[key], new Base())) {
       result[key] = fn(data[key])
     } else if (data[key] instanceof Array && isSubType(data[key][0], new Base())) {
