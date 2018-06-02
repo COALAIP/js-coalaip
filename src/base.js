@@ -54,7 +54,11 @@ Base.prototype.data = function (id) {
     data = this
   }
   return transform(data, instance => {
-    return instance.data(id)
+    if (instance.data) {
+      return instance.data(id)
+    } else {
+      return instance
+    }
   })
 }
 

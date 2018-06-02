@@ -71,6 +71,9 @@ exports.validateParseData = () => {
       other.withData(instance.data())
       other.set('@context', context)
       other.set('@type', type)
+      // console.log('instance.data()', instance.data())
+      // console.log('other', other);
+      // console.log('other.data()', other.data());
       expect(other.data()).to.deep.equal(instance.data())
     })
   })
