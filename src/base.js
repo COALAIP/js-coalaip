@@ -14,11 +14,10 @@ function Base (context, type) {
 }
 
 Base.prototype.add = function (key, val) {
-  const data = this
-  if (!data[key]) {
-    data[key] = []
+  if (!this[key]) {
+    this[key] = []
   }
-  data[key].push(val)
+  this[key].push(val)
 }
 
 Base.prototype.compare = function (other) {
@@ -45,7 +44,6 @@ const transform = function (data, fn) {
 
 Base.prototype.data = function (id) {
   let data
-  let self = this
   if (id) {
     data = Object.assign({
       [id]: this.path
@@ -54,11 +52,8 @@ Base.prototype.data = function (id) {
     data = this
   }
   return transform(data, instance => {
-    if (instance.data) {
-      return instance.data(id)
-    } else {
-      return instance
-    }
+    if (instance.data) return instance.data(id)
+    else return instance
   })
 }
 
@@ -83,14 +78,13 @@ Base.prototype.equals = function (other) {
 }
 
 Base.prototype.rm = function (key, idx) {
-  const data = this
-  if (!data[key]) {
+  if (!this[key]) {
     throw new Error(`could not find key="${key}"`)
   }
-  if (data[key] instanceof Array && typeof idx === 'number') {
-    data[key].splice(idx, 1)
+  if (this[key] instanceof Array && typeof idx === 'number') {
+    this[key].splice(idx, 1)
   } else {
-    delete data[key]
+    delete this[key]
   }
 }
 
