@@ -109,17 +109,16 @@ Base.prototype.subInstances = function () {
 
 Base.prototype.tree = function (key = '') {
   const arr = []
-  const data = this
-  const keys = Object.keys(data)
+  const keys = Object.keys(this)
   let i, j
   for (i = 0; i < keys.length; i++) {
-    if (isSubType(data[keys[i]], new Base())) {
-      arr.push(...data[keys[i]].tree(key + '/' + keys[i]))
+    if (isSubType(this[keys[i]], new Base())) {
+      arr.push(...this[keys[i]].tree(key + '/' + keys[i]))
     }
-    if (data[keys[i]] instanceof Array) {
-      for (j = 0; j < data[keys[i]].length; j++) {
-        if (isSubType(data[keys[i]][j], new Base())) {
-          arr.push(...data[keys[i]][j].tree(key + '/' + keys[i]))
+    if (this[keys[i]] instanceof Array) {
+      for (j = 0; j < this[keys[i]].length; j++) {
+        if (isSubType(this[keys[i]][j], new Base())) {
+          arr.push(...this[keys[i]][j].tree(key + '/' + keys[i]))
         }
       }
     }
