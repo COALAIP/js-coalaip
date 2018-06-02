@@ -28,11 +28,11 @@ const hasSameType = (x, y) => {
 };
 
 const isCoalaObjectAndComparingToBase = (x, y) => {
-  const undefinedTypeAndContextInX = (x && typeof x['@type'] === 'undefined' && typeof x['@context'] === 'undefined')
-  if (!x || !y || undefinedTypeAndContextInX) {
-    return false;
+  const undefinedTypeAndContextInY = (y && typeof y['@type'] === 'undefined' && typeof y['@context'] === 'undefined')
+  if (!x || typeof x !== 'object' || !y || !undefinedTypeAndContextInY) {
+    return false
   }
-  return ('@type' in x && '@context' in x)
+  return ('@type' in x && '@context' in x && 'data' in x)
 };
 
 exports.capitalize = str => {

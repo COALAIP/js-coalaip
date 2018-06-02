@@ -21,7 +21,7 @@ exports.configureInstances = () => {
     }
     for (i = numInstances-1; i >= 0; i--) {
       for (j = i-1; j >= 0; j--) {
-        instances[i].add('subInstances', instances[j])
+        instances[i].add('subInstancesArr', instances[j])
       }
     }
   })
@@ -47,10 +47,10 @@ exports.validateData = () => {
         '@context': context,
         '@type': type,
         path: `<instance${i} path>`,
-        subInstances: []
+        subInstancesArr: []
       }
       for (j = i-1; j >= 0; j--) {
-        expected.subInstances.push(instances[j].data())
+        expected.subInstancesArr.push(instances[j].data())
       }
       expect(actual).to.deep.equal(expected)
     }
@@ -92,7 +92,7 @@ exports.validateSubInstances = () => {
   it('validates sub-instances', () => {
     let actual, expected
     for (let i = numInstances-1; i >= 0; i--) {
-      actual = instances[i].getSubInstances()
+      actual = instances[i].subInstances()
       expected = instances.slice(0, i+1)
       expect(actual).to.deep.equal(expected)
     }
@@ -104,11 +104,11 @@ exports.validateTree = () => {
     let actual, expected
     for (let i = numInstances-1; i >= 0; i--) {
       actual = instances[i].tree()
-      expected = instances[i].getSubInstances().slice(0, -1).reduce((result, instance) => {
+      expected = instances[i].subInstances().slice(0, -1).reduce((result, instance) => {
         return instance.tree().concat(result)
       }, [])
       expected.forEach(obj => {
-        obj.key += '/subInstances'
+        obj.key += '/subInstancesArr'
       })
       expected.push({
         key: '',

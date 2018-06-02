@@ -52,8 +52,7 @@ Base.prototype.data = function (id) {
     data = this
   }
   return transform(data, instance => {
-    if (instance.data) return instance.data(id)
-    else return instance
+    return instance.data(id)
   })
 }
 
@@ -92,7 +91,7 @@ Base.prototype.set = function (key, val) {
   this[key] = val
 }
 
-Base.prototype.getSubInstances = function () {
+Base.prototype.subInstances = function () {
   const tree = this.tree()
   let i, j
   for (i = 0; i < tree.length; i++) {
