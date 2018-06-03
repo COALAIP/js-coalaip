@@ -15,7 +15,8 @@
   "scripts": {
     "lint": "./node_modules/.bin/eslint src",
     "build": "./node_modules/babel-cli/bin/babel.js src --out-dir lib",
-    "test": "./node_modules/.bin/mocha --reporter spec"
+    "test": "./node_modules/.bin/mocha --reporter spec",
+    "postinstall" : "npm run build"
   },
   "devDependencies": {
     "eslint": "^4.7.1"
