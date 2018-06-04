@@ -6,6 +6,7 @@ const it = require('mocha').it
 
 const context = '<context placeholder>'
 const type = '<type placeholder>'
+const path = '<instance* path>'
 
 const numInstances = 10
 const instances = []
@@ -20,7 +21,7 @@ exports.configureInstances = () => {
     }
     for (i = numInstances-1; i >= 0; i--) {
       for (j = i-1; j >= 0; j--) {
-        instances[i].add('subInstances', instances[j])
+        instances[i].add('subInstancesArr', instances[j])
       }
     }
   })
@@ -45,17 +46,19 @@ exports.validateData = () => {
       expected = {
         '@context': context,
         '@type': type,
-        subInstances: []
+        path: `<instance${i} path>`,
+        subInstancesArr: []
       }
       for (j = i-1; j >= 0; j--) {
-        expected.subInstances.push(instances[j].data())
+        expected.subInstancesArr.push(instances[j].data())
       }
       expect(actual).to.deep.equal(expected)
     }
     actual = instances[i].data()
     expected = {
       '@context': context,
-      '@type': type
+      '@type': type,
+      path: `<instance${i} path>`
     }
     expect(actual).to.deep.equal(expected)
   })
@@ -105,7 +108,7 @@ exports.validateTree = () => {
         return instance.tree().concat(result)
       }, [])
       expected.forEach(obj => {
-        obj.key += '/subInstances'
+        obj.key += '/subInstancesArr'
       })
       expected.push({
         key: '',

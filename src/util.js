@@ -21,19 +21,18 @@ const isSameType = (x, y) => {
 }
 
 const hasSameType = (x, y) => {
-  if (!x._data || !y._data) {
+  if (!x || !y) {
     return false
   }
-  return (x._data['@type'] && y._data['@type'] && (x._data['@type'] === y._data['@type']));
+  return (x['@type'] && y['@type'] && (x['@type'] === y['@type']));
 };
 
 const isCoalaObjectAndComparingToBase = (x, y) => {
-  const dataInY = y._data
-  const undefinedTypeAndContextInY = (y._data && typeof y._data['@type'] === 'undefined' && typeof y._data['@context'] === 'undefined')
-  if (!x._data || !dataInY || !undefinedTypeAndContextInY) {
-    return false;
+  const undefinedTypeAndContextInY = (y && typeof y['@type'] === 'undefined' && typeof y['@context'] === 'undefined')
+  if (!x || typeof x !== 'object' || !y || !undefinedTypeAndContextInY) {
+    return false
   }
-  return ('@type' in x._data && '@context' in x._data)
+  return ('@type' in x && '@context' in x && 'data' in x)
 };
 
 exports.capitalize = str => {
@@ -68,10 +67,10 @@ exports.orderStringify = (x, space) => {
 exports.propArray = (cls, expected, key) => {
   const capitalized = exports.capitalize(key)
   cls.prototype['get' + capitalized] = function () {
-    return this._data[key]
+    return this[key]
   }
   cls.prototype['has' + capitalized] = function (actual) {
-    const instances = this._data[key]
+    const instances = this[key]
     for (let i = 0; i < instances.length; i++) {
       if (instances[i].equals(actual)) {
         return true
@@ -83,7 +82,7 @@ exports.propArray = (cls, expected, key) => {
     if (!exports.isSubType(actual, expected)) {
       throw errUnexpectedType(actual, expected)
     }
-    const data = this._data
+    const data = this
     if (!data[key]) {
       data[key] = []
     }
@@ -95,13 +94,13 @@ exports.propArray = (cls, expected, key) => {
 exports.propValue = (cls, expected, key) => {
   const capitalized = exports.capitalize(key)
   cls.prototype['get' + capitalized] = function () {
-    return this._data[key]
+    return this[key]
   }
   cls.prototype['set' + capitalized] = function (actual) {
     if (!exports.isSubType(actual, expected)) {
       throw errUnexpectedType(actual, expected)
     }
-    this._data[key] = actual
+    this[key] = actual
   }
   cls.prototype['type' + capitalized] = expected.constructor
 }

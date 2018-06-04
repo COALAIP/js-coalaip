@@ -9,18 +9,15 @@ const {
 } = require('./util')
 
 function Base (context, type) {
-  this._data = {
-    '@context': context,
-    '@type': type
-  }
+  this['@context'] = context;
+  this['@type'] = type;
 }
 
 Base.prototype.add = function (key, val) {
-  const data = this._data
-  if (!data[key]) {
-    data[key] = []
+  if (!this[key]) {
+    this[key] = []
   }
-  data[key].push(val)
+  this[key].push(val)
 }
 
 Base.prototype.compare = function (other) {
@@ -50,9 +47,9 @@ Base.prototype.data = function (id) {
   if (id) {
     data = Object.assign({
       [id]: this.path
-    }, this._data)
+    }, this)
   } else {
-    data = this._data
+    data = this
   }
   return transform(data, instance => {
     return instance.data(id)
@@ -64,7 +61,7 @@ Base.prototype.dataOrdered = function (id) {
 }
 
 Base.prototype.ipld = function () {
-  return transform(this._data, instance => {
+  return transform(this, instance => {
     return {
       '/': instance.path
     }
@@ -80,19 +77,18 @@ Base.prototype.equals = function (other) {
 }
 
 Base.prototype.rm = function (key, idx) {
-  const data = this._data
-  if (!data[key]) {
+  if (!this[key]) {
     throw new Error(`could not find key="${key}"`)
   }
-  if (data[key] instanceof Array && typeof idx === 'number') {
-    data[key].splice(idx, 1)
+  if (this[key] instanceof Array && typeof idx === 'number') {
+    this[key].splice(idx, 1)
   } else {
-    delete data[key]
+    delete this[key]
   }
 }
 
 Base.prototype.set = function (key, val) {
-  this._data[key] = val
+  this[key] = val
 }
 
 Base.prototype.subInstances = function () {
@@ -113,17 +109,16 @@ Base.prototype.subInstances = function () {
 
 Base.prototype.tree = function (key = '') {
   const arr = []
-  const data = this._data
-  const keys = Object.keys(data)
+  const keys = Object.keys(this)
   let i, j
   for (i = 0; i < keys.length; i++) {
-    if (isSubType(data[keys[i]], new Base())) {
-      arr.push(...data[keys[i]].tree(key + '/' + keys[i]))
+    if (isSubType(this[keys[i]], new Base())) {
+      arr.push(...this[keys[i]].tree(key + '/' + keys[i]))
     }
-    if (data[keys[i]] instanceof Array) {
-      for (j = 0; j < data[keys[i]].length; j++) {
-        if (isSubType(data[keys[i]][j], new Base())) {
-          arr.push(...data[keys[i]][j].tree(key + '/' + keys[i]))
+    if (this[keys[i]] instanceof Array) {
+      for (j = 0; j < this[keys[i]].length; j++) {
+        if (isSubType(this[keys[i]][j], new Base())) {
+          arr.push(...this[keys[i]][j].tree(key + '/' + keys[i]))
         }
       }
     }
