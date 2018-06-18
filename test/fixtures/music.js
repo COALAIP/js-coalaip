@@ -73,7 +73,7 @@ exports.MusicGroup = {
   ],
   add: {
     genre: 'ska',
-    member: party
+    members: [party, party]
   },
   set: {
     email: 'me@example.org',
@@ -117,7 +117,7 @@ exports.MusicPlaylist = {
     genre: 'slimecore',
     producer: party,
     publisher: party,
-    track: musicRecording
+    tracks: [musicRecording, musicRecording]
   },
   set: {
     name: 'musicPlaylist'
@@ -139,7 +139,7 @@ exports.MusicAlbum = {
     genre: 'slimecore',
     producer: party,
     publisher: party,
-    track: musicRecording
+    tracks: [musicRecording, musicRecording]
   },
   set: {
     albumProductionType: 'DemoAlbum',
@@ -162,7 +162,7 @@ exports.MusicRelease = {
     producer: party,
     publisher: party,
     recordLabel: party,
-    track: musicRecording
+    tracks: [musicRecording, musicRecording]
   },
   set: {
     catalogNumber: '12345',

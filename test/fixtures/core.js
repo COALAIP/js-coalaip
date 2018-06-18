@@ -113,7 +113,8 @@ exports.CreativeWork = {
   add: {
     genre: 'slimecore',
     producer: party,
-    publisher: party
+    publisher: party,
+    associatedMedia: [imageObject, imageObject]
   },
   set: {
     name: 'creativeWork'
@@ -258,7 +259,7 @@ exports.Organization = {
     core.Party
   ],
   add: {
-    member: party
+    members: [party, party]
   },
   set: {
     email: 'me@example.org',
