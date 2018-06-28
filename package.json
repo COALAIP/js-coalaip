@@ -13,9 +13,9 @@
     "mocha": "^3.5.0"
   },
   "scripts": {
-    "lint": "eslint src",
-    "build": "babel src --out-dir lib",
-    "test": "mocha --reporter spec",
+    "lint": "./node_modules/.bin/eslint src",
+    "build": "./node_modules/.bin/babel src --out-dir lib",
+    "test": "./node_modules/.bin/mocha --reporter spec",
     "postinstall": "npm run build"
   },
   "repository": {
