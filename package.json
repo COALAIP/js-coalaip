@@ -1,7 +1,7 @@
 {
-  "name": "js-coalaip",
+  "name": "coalaip",
   "version": "0.0.1",
-  "author": "Zachary Balder",
+  "description": "Javascript implementation of the COALA IP specification",
   "license": "MIT",
   "main": "lib/index.js",
   "dependencies": {
@@ -16,12 +16,30 @@
     "lint": "./node_modules/.bin/eslint src",
     "build": "./node_modules/.bin/babel src --out-dir lib",
     "test": "./node_modules/.bin/mocha --reporter spec",
-    "postinstall" : "npm run build"
+    "postinstall": "npm run build"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/COALAIP/js-coalaip.git"
+  },
+  "keywords": [
+    "COALA IP"
+  ],
   "devDependencies": {
     "eslint": "^4.7.1"
   },
   "babel": {
-    "presets": ["es2015"]
-  }
+    "presets": [
+      "es2015"
+    ]
+  },
+  "contributors": [
+    "Zachary Balder <zbalder68@gmail.com>",
+    "Kyle Burke <k23burke@gmail.com>",
+    "Thomas O'Brien <tbobrien612@gmail.com>"
+  ],
+  "bugs": {
+    "url": "https://github.com/COALAIP/js-coalaip/issues"
+  },
+  "homepage": "https://github.com/COALAIP/js-coalaip#readme"
 }
