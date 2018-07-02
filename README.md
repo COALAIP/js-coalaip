@@ -1,6 +1,4 @@
-## js-coalaip
-
-Javascript implementation for [COALA IP](https://github.com/COALAIP/specs).
+# Javascript implementation for [COALA IP](https://github.com/COALAIP/specs).
 
 ### Linked Metadata
 
