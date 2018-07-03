@@ -1,6 +1,14 @@
-## js-coalaip
+# Javascript implementation for [COALA IP](https://github.com/COALAIP/specs).
 
-Javascript implementation for [COALA IP](https://github.com/COALAIP/specs).
+## Install
+
+### npm
+
+This project is available through [npm](https://www.npmjs.com/). To install run
+
+```bash
+> npm install coalaip --save
+```
 
 ### Linked Metadata
 
@@ -22,7 +30,7 @@ Some code to get started structuring metadata. In order to persist to a storage 
 
 #### Create a `Person`
 ```js
-const Person = require('./src/core').Person
+const Person = require('coalaip/lib/core').Person
 
 const man = new Person()
 man.setGivenName('John')
@@ -80,7 +88,7 @@ const {
   MusicComposition,
   MusicGroup,
   MusicRecording
-} = require('./src/music')
+} = require('coalaip/lib/music')
 
 // 'member' expects an array of Parties
 const group = new MusicGroup()
