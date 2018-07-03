@@ -1,8 +1,6 @@
 # Javascript implementation for [COALA IP](https://github.com/COALAIP/specs).
 
-## Install
-
-### npm
+### Install
 
 This project is available through [npm](https://www.npmjs.com/). To install run
 
