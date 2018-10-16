@@ -88,11 +88,11 @@ const {
   MusicRecording
 } = require('coalaip/lib/music')
 
-// 'member' expects an array of Parties
+// 'members' expects an array of Parties
 const group = new MusicGroup()
 group.setDescription('descriptive')
 group.setName('Beatles')
-group.addMember(man)
+group.addMembers(man)
 group.path = '<placeholder group path>'
 
 const composition = new MusicComposition()
@@ -108,17 +108,17 @@ recording.setRecordingOf(comp)
 
 console.log(recording.data())
 
-// {  
+// {
 //   "@context": "http://coalaip.org",
 //   "@type": "MusicRecording",
-//   "byArtist": [  
-//     {  
+//   "byArtist": [
+//     {
 //       "@context": "http://schema.org",
 //       "@type": "MusicGroup",
 //       "name": "Beatles",
 //       "description": "descriptive",
-//       "member": [  
-//         {  
+//       "members": [
+//         {
 //           "@context": "http://schema.org",
 //           "@type": "Person",
 //           "givenName": "John",
@@ -128,11 +128,11 @@ console.log(recording.data())
 //       ]
 //     }
 //   ],
-//   "recordingOf": {  
+//   "recordingOf": {
 //     "@context": "http://coalaip.org",
 //     "@type": "MusicComposition",
-//     "composer": [  
-//       {  
+//     "composer": [
+//       {
 //         "@context": "http://schema.org",
 //         "@type": "Person",
 //         "givenName": "John",
@@ -147,15 +147,15 @@ console.log(recording.data())
 
 console.log(recording.ipld())
 
-// {  
+// {
 //   "@context": "http://coalaip.org",
 //   "@type": "MusicRecording",
-//   "byArtist": [  
-//     {  
+//   "byArtist": [
+//     {
 //       "/": "<placeholder group path>"
 //     }
 //   ],
-//   "recordingOf": {  
+//   "recordingOf": {
 //     "/": "<placeholder composition path>"
 //   }
 // }

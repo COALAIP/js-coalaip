@@ -42,7 +42,7 @@ function MusicPlaylist (type = 'MusicPlaylist') {
 }
 
 inherit(MusicPlaylist, CreativeWork)
-propArray(MusicPlaylist, new MusicRecording(), 'track')
+propArray(MusicPlaylist, new MusicRecording(), 'tracks')
 
 // MusicRecording
 

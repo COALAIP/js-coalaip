@@ -40,6 +40,7 @@ inherit(CreativeWork, Thing)
 propArray(CreativeWork, String(), 'genre')
 propArray(CreativeWork, new Party(), 'producer')
 propArray(CreativeWork, new Party(), 'publisher')
+propArray(CreativeWork, new MediaObject(), 'associatedMedia')
 
 // Intangible
 
@@ -121,7 +122,7 @@ function Organization (type = 'Organization') {
 
 inherit(Organization, Party)
 
-propArray(Organization, new Party(), 'member')
+propArray(Organization, new Party(), 'members')
 
 // Person
 
